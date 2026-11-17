@@ -1,23 +1,53 @@
-<div class="admin">
+<div class="admin" [class.is-menu-open]="menuOpen()">
   <aside class="admin-nav">
-    <div class="admin-brand">
-      <strong>My Clinic</strong>
-      <span>Admin desk</span>
+    <div class="admin-nav-bar">
+      <div class="admin-brand">
+        <strong>My Clinic</strong>
+        <span>Admin desk</span>
+      </div>
+      <button
+        type="button"
+        class="admin-menu-toggle"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="admin-nav-panel"
+      >
+        <span class="sr-only">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+        <span class="admin-menu-toggle-icon" [class.is-open]="menuOpen()" aria-hidden="true"></span>
+      </button>
     </div>
-    <nav>
-      <a routerLink="/admin" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-      <a routerLink="/admin/banners" routerLinkActive="is-active">Banners</a>
-      <a routerLink="/admin/doctors" routerLinkActive="is-active">Doctors</a>
-      <a routerLink="/admin/services" routerLinkActive="is-active">Services</a>
-      <a routerLink="/admin/clinic" routerLinkActive="is-active">Clinic profile</a>
-      <a routerLink="/admin/enquiries" routerLinkActive="is-active">Enquiries</a>
-    </nav>
-    <div class="admin-nav-foot">
-      <p>{{ admin()?.email }}</p>
-      <a routerLink="/">View site</a>
-      <button type="button" class="btn-logout" (click)="logout()">Log out</button>
+
+    <button
+      type="button"
+      class="admin-nav-backdrop"
+      aria-label="Close menu"
+      (click)="closeMenu()"
+      [hidden]="!menuOpen()"
+    ></button>
+
+    <div id="admin-nav-panel" class="admin-nav-panel" [class.is-open]="menuOpen()">
+      <nav aria-label="Admin">
+        <a
+          routerLink="/admin"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMenu()"
+          >Dashboard</a
+        >
+        <a routerLink="/admin/banners" routerLinkActive="is-active" (click)="closeMenu()">Banners</a>
+        <a routerLink="/admin/doctors" routerLinkActive="is-active" (click)="closeMenu()">Doctors</a>
+        <a routerLink="/admin/services" routerLinkActive="is-active" (click)="closeMenu()">Services</a>
+        <a routerLink="/admin/clinic" routerLinkActive="is-active" (click)="closeMenu()">Clinic profile</a>
+        <a routerLink="/admin/enquiries" routerLinkActive="is-active" (click)="closeMenu()">Enquiries</a>
+      </nav>
+      <div class="admin-nav-foot">
+        <p>{{ admin()?.email }}</p>
+        <a routerLink="/" (click)="closeMenu()">View site</a>
+        <button type="button" class="btn-logout" (click)="logout()">Log out</button>
+      </div>
     </div>
   </aside>
+
   <section class="admin-body">
     <router-outlet />
   </section>
