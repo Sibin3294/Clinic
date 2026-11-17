@@ -1,69 +1,86 @@
-.service-row.has-media {
-  grid-template-columns: minmax(140px, 200px) 56px 1.2fr 0.9fr;
-  align-items: stretch;
+.service-card {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 0;
   overflow: hidden;
   background: var(--paper-strong);
   border: 1px solid var(--line);
   border-radius: 22px;
-  padding: 0;
+  box-shadow: 0 10px 28px rgba(18, 53, 47, 0.03);
 }
 
-.service-media {
-  min-height: 100%;
-  overflow: hidden;
+.service-card-media {
+  position: relative;
+  min-height: 220px;
   background: #efe9de;
-  aspect-ratio: 1;
+  overflow: hidden;
 }
 
-.service-media img {
+.service-card-media img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 160px;
   object-fit: cover;
   object-position: center;
   display: block;
 }
 
-.service-row.has-media > .service-index,
-.service-row.has-media > div:not(.service-media):not(.service-side),
-.service-row.has-media > .service-side {
-  padding-top: 1.15rem;
-  padding-bottom: 1.15rem;
+.service-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  gap: 1rem 1.25rem;
+  padding: 1.25rem 1.35rem;
+  align-items: start;
 }
 
-.service-row.has-media > .service-index {
-  padding-left: 0.35rem;
+.service-card-index {
+  margin: 0 0 0.35rem;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--gold);
 }
 
-.service-row.has-media > div:not(.service-media):not(.service-side) {
-  padding-right: 0.5rem;
+.service-card-copy h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.45rem;
 }
 
-.service-row.has-media > .service-side {
-  padding-right: 1.15rem;
+.service-card-copy > p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.service-card-side {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+}
+
+.service-card-side ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
 }
 
 @media (max-width: 900px) {
-  .service-row.has-media {
+  .service-card {
     grid-template-columns: 1fr;
   }
 
-  .service-media {
+  .service-card-media {
+    min-height: 0;
     aspect-ratio: 16 / 10;
-    max-height: 220px;
   }
 
-  .service-row.has-media > .service-index,
-  .service-row.has-media > div:not(.service-media):not(.service-side),
-  .service-row.has-media > .service-side {
-    padding-inline: 1.1rem;
+  .service-card-body {
+    grid-template-columns: 1fr;
+    padding: 1.1rem 1.15rem 1.25rem;
   }
+}
 
-  .service-row.has-media > .service-index {
-    padding-bottom: 0;
-  }
-
-  .service-row.has-media > .service-side {
-    padding-top: 0;
+@media (max-width: 560px) {
+  .service-card-media {
+    aspect-ratio: 1.2;
   }
 }

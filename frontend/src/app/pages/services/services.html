@@ -9,26 +9,28 @@
 
 <section class="section wrap service-list">
   @for (service of services(); track service.id; let index = $index) {
-    <article class="service-row has-media" [id]="service.id">
-      <div class="service-media" aria-hidden="true">
+    <article class="service-card" [id]="service.id">
+      <div class="service-card-media" aria-hidden="true">
         <img [src]="serviceImage(service.slug || service.id)" [alt]="''" />
       </div>
-      <div class="service-index">0{{ index + 1 }}</div>
-      <div>
-        <h2>{{ service.name }}</h2>
-        <p>{{ service.summary }}</p>
-        <p class="suited"><span>Suited for</span> {{ service.suitedFor }}</p>
-      </div>
-      <div class="service-side">
-        <p class="info-card-meta">{{ service.duration }}</p>
-        <ul>
-          @for (item of service.includes; track item) {
-            <li>{{ item }}</li>
-          }
-        </ul>
-        <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ department: service.department }">
-          Enquire about {{ service.name }}
-        </a>
+      <div class="service-card-body">
+        <div class="service-card-copy">
+          <p class="service-card-index">0{{ index + 1 }}</p>
+          <h2>{{ service.name }}</h2>
+          <p>{{ service.summary }}</p>
+          <p class="suited"><span>Suited for</span> {{ service.suitedFor }}</p>
+        </div>
+        <div class="service-card-side">
+          <p class="info-card-meta">{{ service.duration }}</p>
+          <ul>
+            @for (item of service.includes; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+          <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ department: service.department }">
+            Enquire about {{ service.name }}
+          </a>
+        </div>
       </div>
     </article>
   }

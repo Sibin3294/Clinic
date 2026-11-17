@@ -125,12 +125,14 @@
           <span class="stage-thumb" aria-hidden="true">
             <img [src]="serviceImage(service.slug || service.id)" [alt]="''" />
           </span>
-          <span class="stage-index">0{{ i + 1 }}</span>
-          <div>
+          <div class="stage-copy">
+            <div class="stage-copy-top">
+              <span class="stage-index">0{{ i + 1 }}</span>
+              <span class="stage-meta">{{ service.duration }}</span>
+            </div>
             <h3>{{ service.name }}</h3>
             <p>{{ service.summary }}</p>
           </div>
-          <span class="stage-meta">{{ service.duration }}</span>
         </a>
       }
     </div>
