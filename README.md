@@ -1,4 +1,4 @@
-# Meridian Clinic
+# My Clinic
 
 Monorepo with a public Angular website and a Node.js + MongoDB admin API.
 
@@ -28,8 +28,8 @@ API: http://127.0.0.1:4000
 
 Default admin:
 
-- Email: `admin@meridianclinic.example`
-- Password: `Admin@123`
+- Email: `myclinic@gmail.com`
+- Password: `myclinic@123`
 
 ## Frontend
 
@@ -67,7 +67,7 @@ This folder is not a Git repo yet. From the project root:
 ```bash
 git init
 git add .
-git commit -m "Prepare Meridian Clinic for Render"
+git commit -m "Prepare My Clinic for Render"
 # create a GitHub repo, then:
 git remote add origin https://github.com/<you>/<repo>.git
 git branch -M main
@@ -92,10 +92,10 @@ git push -u origin main
 
 ### 4. After deploy
 
-- Public site: `https://clinic-web.onrender.com`
-- Admin: `https://clinic-web.onrender.com/admin/login`
-- API health: `https://clinic-api.onrender.com/api/health`
+- Public site: `https://clinic-web-q002.onrender.com`
+- Admin: `https://clinic-web-q002.onrender.com/admin/login`
+- API health: `https://clinic-api-26as.onrender.com/api/health`
 
-If Render gives the API a different hostname than `clinic-api.onrender.com`, update `frontend/src/environments/environment.prod.ts` (`apiOrigin`) and redeploy `clinic-web`.
+If Render gives the API a different hostname, update `frontend/src/environments/environment.prod.ts` (`apiOrigin`) and redeploy `clinic-web`.
 
 **Note:** On the free API plan, uploaded images live on an ephemeral disk and can be lost on redeploy. For lasting uploads, upgrade the API service and attach a persistent disk, or move media to object storage later.

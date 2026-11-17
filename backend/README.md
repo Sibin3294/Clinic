@@ -1,6 +1,6 @@
 # Clinic API
 
-Node.js + Express + MongoDB backend for Meridian Clinic.
+Node.js + Express + MongoDB backend for My Clinic.
 
 ## Setup
 
@@ -15,8 +15,8 @@ API: `http://127.0.0.1:4000`
 
 Default admin (from `.env`):
 
-- Email: `admin@meridianclinic.example`
-- Password: `Admin@123`
+- Email: `myclinic@gmail.com`
+- Password: `myclinic@123`
 
 ## Endpoints
 

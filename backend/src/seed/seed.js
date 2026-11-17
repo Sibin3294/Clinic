@@ -10,9 +10,12 @@ const { clinicProfile, banners, doctors, services } = require('./data');
 
 async function ensureAdmin() {
   const email = env.adminEmail.toLowerCase();
-  const existing = await Admin.findOne({ email });
   const passwordHash = await bcrypt.hash(env.adminPassword, 10);
 
+  // Keep a single admin matching env credentials (old logins stop working).
+  await Admin.deleteMany({ email: { $ne: email } });
+
+  const existing = await Admin.findOne({ email });
   if (existing) {
     existing.passwordHash = passwordHash;
     existing.name = 'Clinic Admin';
@@ -25,12 +28,30 @@ async function ensureAdmin() {
   console.log(`Admin created: ${email}`);
 }
 
+async function ensureClinicBrand() {
+  const updated = await ClinicProfile.findOneAndUpdate(
+    { key: 'default' },
+    {
+      $set: {
+        name: clinicProfile.name,
+        email: clinicProfile.email,
+      },
+    },
+    { new: true },
+  );
+  if (updated) {
+    console.log(`Clinic brand: ${updated.name}`);
+  }
+}
+
 async function seedContent({ force = false } = {}) {
   const profileCount = await ClinicProfile.countDocuments();
   if (force || profileCount === 0) {
     await ClinicProfile.deleteMany({});
     await ClinicProfile.create(clinicProfile);
     console.log('Clinic profile seeded');
+  } else {
+    await ensureClinicBrand();
   }
 
   const bannerCount = await Banner.countDocuments();

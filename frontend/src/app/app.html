@@ -19,8 +19,8 @@
           </svg>
         </span>
         <span class="brand-text">
-          <span class="brand-name">Meridian</span>
-          <span class="brand-meta">Clinic · {{ clinic().city }}</span>
+          <span class="brand-name">{{ clinic().name || 'My Clinic' }}</span>
+          <span class="brand-meta">{{ clinic().city }}</span>
         </span>
       </a>
 

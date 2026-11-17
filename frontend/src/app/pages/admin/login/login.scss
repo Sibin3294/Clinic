@@ -111,6 +111,37 @@
   box-shadow: 0 0 0 3px rgba(28, 83, 73, 0.12);
 }
 
+.password-field {
+  position: relative;
+  display: grid;
+}
+
+.password-field input {
+  padding-right: 4.25rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
+  background: transparent;
+  color: var(--pine-mid);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+  background: color-mix(in srgb, var(--pine) 8%, transparent);
+  outline: none;
+}
+
 .login-submit {
   margin-top: 0.35rem;
   width: 100%;

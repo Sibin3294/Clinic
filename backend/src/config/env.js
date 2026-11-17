@@ -24,8 +24,8 @@ const env = {
   mongodbUri,
   jwtSecret: process.env.JWT_SECRET || 'dev-secret',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  adminEmail: process.env.ADMIN_EMAIL || 'admin@meridianclinic.example',
-  adminPassword: process.env.ADMIN_PASSWORD || 'Admin@123',
+  adminEmail: process.env.ADMIN_EMAIL || 'myclinic@gmail.com',
+  adminPassword: process.env.ADMIN_PASSWORD || 'myclinic@123',
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGIN),
   uploadsDir: process.env.UPLOADS_DIR || path.join(__dirname, '../../uploads'),
 };

@@ -5,27 +5,27 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
-    title: 'Meridian Clinic',
+    title: 'My Clinic',
   },
   {
     path: 'doctors',
     loadComponent: () => import('./pages/doctors/doctors').then((m) => m.Doctors),
-    title: 'Doctors · Meridian Clinic',
+    title: 'Doctors · My Clinic',
   },
   {
     path: 'services',
     loadComponent: () => import('./pages/services/services').then((m) => m.ServicesPage),
-    title: 'Services · Meridian Clinic',
+    title: 'Services · My Clinic',
   },
   {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
-    title: 'Enquiry · Meridian Clinic',
+    title: 'Enquiry · My Clinic',
   },
   {
     path: 'admin/login',
     loadComponent: () => import('./pages/admin/login/login').then((m) => m.AdminLogin),
-    title: 'Admin login · Meridian Clinic',
+    title: 'Admin login · My Clinic',
   },
   {
     path: 'admin',
@@ -35,7 +35,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./pages/admin/dashboard/dashboard').then((m) => m.AdminDashboard),
-        title: 'Admin · Meridian Clinic',
+        title: 'Admin · My Clinic',
       },
       {
         path: 'banners',

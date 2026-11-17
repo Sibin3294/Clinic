@@ -16,9 +16,10 @@ export class AdminLogin {
 
   readonly error = signal('');
   readonly loading = signal(false);
+  readonly showPassword = signal(false);
 
   readonly form = this.fb.nonNullable.group({
-    email: ['admin@meridianclinic.example', [Validators.required, Validators.email]],
+    email: ['myclinic@gmail.com', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
