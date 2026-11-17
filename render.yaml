@@ -34,9 +34,10 @@ services:
         fromService:
           name: clinic-web
           type: web
-          property: host
+          property: url
       - key: UPLOADS_DIR
-        value: /opt/render/project/src/backend/uploads
+        # rootDir is backend → project root is already backend/
+        value: /opt/render/project/src/uploads
 
   - type: web
     name: clinic-web

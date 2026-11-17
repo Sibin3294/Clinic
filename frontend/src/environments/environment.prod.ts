@@ -4,5 +4,5 @@ export const environment = {
    * Must match the Render API service hostname from render.yaml (`clinic-api`).
    * If Render assigns a different URL, update this and redeploy the static site.
    */
-  apiOrigin: 'https://clinic-api.onrender.com',
+  apiOrigin: 'https://clinic-api-26as.onrender.com',
 };
