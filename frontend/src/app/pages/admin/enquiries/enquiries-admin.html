@@ -1,0 +1,59 @@
+<div class="admin-page">
+  <header class="admin-page-head">
+    <h1>Enquiries</h1>
+    <p class="lede">Messages submitted from the public contact form.</p>
+  </header>
+
+  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
+  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Enquiry</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Preferred day</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of items(); track item.id) {
+          <tr>
+            <td>
+              <div class="enquiry-detail">
+                <strong>{{ item.reference }}</strong>
+                <div class="meta">{{ item.phone }} · {{ item.email }}</div>
+                <div class="note">{{ item.message }}</div>
+              </div>
+            </td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.department }}</td>
+            <td>{{ item.preferredDate }}</td>
+            <td>
+              <span
+                class="admin-badge"
+                [class.is-new]="(item.status || 'new') === 'new'"
+                [class.is-contacted]="item.status === 'contacted'"
+                [class.is-closed]="item.status === 'closed'"
+              >
+                {{ item.status || 'new' }}
+              </span>
+            </td>
+            <td class="admin-actions">
+              <button type="button" class="btn-info" (click)="setStatus(item, 'contacted')">Mark contacted</button>
+              <button type="button" class="btn-muted" (click)="setStatus(item, 'closed')">Close</button>
+              <button type="button" class="btn-danger" (click)="remove(item)">Delete</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No enquiries yet.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

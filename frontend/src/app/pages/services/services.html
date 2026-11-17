@@ -1,0 +1,32 @@
+<header class="page-hero wrap">
+  <p class="kicker">Services</p>
+  <h1>Care we provide in the clinic.</h1>
+  <p class="lede">
+    Consultations, health checks, and on-site diagnostics. If you are unsure which door to knock on,
+    say so in the enquiry and the desk will route it.
+  </p>
+</header>
+
+<section class="section wrap service-list">
+  @for (service of services(); track service.id; let index = $index) {
+    <article class="service-row" [id]="service.id">
+      <div class="service-index">0{{ index + 1 }}</div>
+      <div>
+        <h2>{{ service.name }}</h2>
+        <p>{{ service.summary }}</p>
+        <p class="suited"><span>Suited for</span> {{ service.suitedFor }}</p>
+      </div>
+      <div class="service-side">
+        <p class="info-card-meta">{{ service.duration }}</p>
+        <ul>
+          @for (item of service.includes; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+        <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ department: service.department }">
+          Enquire about {{ service.name }}
+        </a>
+      </div>
+    </article>
+  }
+</section>

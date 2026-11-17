@@ -1,0 +1,122 @@
+<div class="admin-page">
+  <header class="admin-page-head">
+    <h1>Doctors</h1>
+    <p class="lede">Add, edit, or remove consultants shown on the public site.</p>
+  </header>
+
+  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
+  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
+
+  <div class="admin-toolbar">
+    <button type="button" class="btn-add" (click)="startCreate()">Add doctor</button>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>Name</th>
+          <th>Specialty</th>
+          <th>Days</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of items(); track item.id) {
+          <tr>
+            <td>
+              @if (item.photo) {
+                <img class="admin-thumb admin-thumb-round" [src]="item.photo | mediaUrl" [alt]="item.name" />
+              } @else {
+                <span class="admin-avatar-fallback" [attr.data-tone]="item.tone">{{ item.initials }}</span>
+              }
+            </td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.specialty }}</td>
+            <td>{{ item.days }}</td>
+            <td>
+              <span class="admin-badge" [class.is-on]="item.active !== false" [class.is-off]="item.active === false">
+                {{ item.active === false ? 'Hidden' : 'Active' }}
+              </span>
+            </td>
+            <td class="admin-actions">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+              <button type="button" class="btn-danger" (click)="remove(item)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (formOpen()) {
+  <div class="admin-modal-backdrop" (click)="closeForm()" role="presentation">
+    <div
+      class="admin-modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="editingId() ? 'Edit doctor' : 'New doctor'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="admin-modal-head">
+        <h2>{{ editingId() ? 'Edit doctor' : 'New doctor' }}</h2>
+        <button type="button" class="admin-modal-close" (click)="closeForm()" aria-label="Close">×</button>
+      </div>
+
+      @if (formError()) {
+        <p class="admin-msg error">{{ formError() }}</p>
+      }
+
+      <form class="admin-form" [formGroup]="form" (ngSubmit)="save()">
+        <div class="upload-block">
+          <label>
+            Profile photo
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onPhotoSelected($event)" />
+          </label>
+          <p class="upload-hint">JPEG, PNG, WebP, or GIF · max 5 MB. Initials are used if no photo is set.</p>
+          @if (uploading()) {
+            <p class="upload-hint">Uploading…</p>
+          }
+          @if (form.controls.photo.value) {
+            <div class="upload-preview upload-preview-avatar">
+              <img [src]="form.controls.photo.value | mediaUrl" alt="Doctor photo preview" />
+              <div class="admin-actions">
+                <button type="button" class="btn-muted" (click)="clearPhoto()">Remove photo</button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="grid">
+          <label>Name <input formControlName="name" /></label>
+          <label>Specialty <input formControlName="specialty" /></label>
+          <label>Credentials <input formControlName="credentials" /></label>
+          <label>Years <input type="number" formControlName="years" /></label>
+          <label>Days <input formControlName="days" /></label>
+          <label>Initials <input formControlName="initials" /></label>
+          <label>Tone
+            <select formControlName="tone">
+              @for (tone of tones; track tone) {
+                <option [value]="tone">{{ tone }}</option>
+              }
+            </select>
+          </label>
+          <label>Order <input type="number" formControlName="order" /></label>
+          <label>Focus (comma separated) <input formControlName="focus" /></label>
+          <label class="checkbox">
+            <span>Active on public site</span>
+            <input type="checkbox" formControlName="active" />
+          </label>
+        </div>
+        <label>Bio <textarea formControlName="bio"></textarea></label>
+        <div class="admin-actions">
+          <button type="button" class="btn-muted" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="btn-save" [disabled]="uploading()">Save doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

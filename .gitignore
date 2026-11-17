@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+.history/*
+
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/npm-debug.log*
+
+backend/node_modules/
+backend/.env
+backend/npm-debug.log*
+backend/uploads/

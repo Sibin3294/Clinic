@@ -1,0 +1,213 @@
+<section #banner class="banner" aria-label="Clinic banner">
+  <div class="banner-media" [style.transform]="'translate3d(0,' + parallax() * 18 + '%,0) scale(1.12)'">
+    @for (slide of slides(); track slide.src; let i = $index) {
+      <img
+        [src]="slide.src | mediaUrl"
+        [alt]="active() === i ? slide.alt : ''"
+        [class.is-active]="active() === i"
+        [attr.aria-hidden]="active() !== i"
+      />
+    }
+  </div>
+  <div class="banner-scrim" aria-hidden="true"></div>
+  <div class="banner-grain" aria-hidden="true"></div>
+
+  <div class="wrap banner-inner" [style.opacity]="1 - parallax() * 0.55" [style.transform]="'translate3d(0,' + parallax() * -40 + 'px,0)'">
+    <div class="banner-copy">
+      <p class="kicker kicker-light">Private clinic · {{ clinic().city }}</p>
+      <h1>
+        <span class="line">Care that</span>
+        <span class="line accent">stays with you.</span>
+      </h1>
+      <p class="lede lede-light">{{ clinic().lede }}</p>
+      <div class="banner-actions">
+        <a class="btn btn-light" routerLink="/contact">Send an enquiry</a>
+        <a class="btn btn-line" routerLink="/doctors">Meet the doctors</a>
+      </div>
+    </div>
+
+    <dl class="banner-facts">
+      <div>
+        <dt>Front desk</dt>
+        <dd><a [href]="clinic().phoneHref">{{ clinic().phoneDisplay }}</a></dd>
+      </div>
+      @for (row of clinic().hours; track row.days) {
+        <div>
+          <dt>{{ row.days }}</dt>
+          <dd>{{ row.time }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  <div class="wrap banner-switch" role="group" aria-label="Banner photographs">
+    @for (slide of slides(); track slide.src; let i = $index) {
+      <button type="button" [class.is-active]="active() === i" [attr.aria-pressed]="active() === i" (click)="show(i)">
+        <span class="dot" aria-hidden="true"></span>
+        {{ slide.label }}
+      </button>
+    }
+  </div>
+  <div class="scroll-cue" aria-hidden="true">
+    <span>Scroll</span>
+  </div>
+</section>
+
+<section class="service-index" aria-label="Clinic services">
+  <div class="wrap service-index-inner" appReveal>
+    <div class="service-index-intro">
+      <p class="kicker">Under one roof</p>
+      <p class="service-index-lede">Departments you can enquire about today</p>
+    </div>
+    <ul class="service-index-list">
+      @for (service of services(); track service.id; let last = $last) {
+        <li>
+          <a [routerLink]="['/services']" [fragment]="service.id">{{ service.name }}</a>
+          @if (!last) {
+            <span class="service-index-rule" aria-hidden="true"></span>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="stats-band wrap" aria-label="Clinic at a glance">
+  <div class="stat" appReveal>
+    <strong>{{ doctors().length }}</strong>
+    <span>Consultants on the diary</span>
+  </div>
+  <div class="stat" appReveal [appRevealDelay]="80">
+    <strong>{{ services().length }}</strong>
+    <span>Services under one roof</span>
+  </div>
+  <div class="stat" appReveal [appRevealDelay]="160">
+    <strong>Mon–Sat</strong>
+    <span>Open for booked visits</span>
+  </div>
+  <div class="stat" appReveal [appRevealDelay]="240">
+    <strong>Same day</strong>
+    <span>When the morning diary allows</span>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="wrap statement-inner" appReveal>
+    <p class="kicker">Why Meridian</p>
+    <h2>
+      Not a waiting-room website.
+      <em>A clinic that shows its rooms, its hours, and who will see you.</em>
+    </h2>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="wrap stage-grid">
+    <div class="stage-sticky" appReveal>
+      <p class="kicker">Services</p>
+      <h2>What we look after</h2>
+      <p class="lede">Scroll the list. Each service opens into a real consulting plan, not a brochure bullet.</p>
+      <a class="text-link" routerLink="/services">All services</a>
+      <div class="stage-photo">
+        <img src="banners/clinic-reception.jpg" alt="Reception desk at Meridian Clinic" />
+      </div>
+    </div>
+
+    <div class="stage-list">
+      @for (service of services(); track service.id; let i = $index) {
+        <a
+          class="stage-item"
+          appReveal
+          [appRevealDelay]="i * 40"
+          [routerLink]="['/services']"
+          [fragment]="service.id"
+        >
+          <span class="stage-index">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ service.name }}</h3>
+            <p>{{ service.summary }}</p>
+          </div>
+          <span class="stage-meta">{{ service.duration }}</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="rail-section">
+  <div class="wrap section-head" appReveal>
+    <div>
+      <p class="kicker">Consultants</p>
+      <h2>Doctors who stay with the case</h2>
+    </div>
+    <a class="text-link" routerLink="/doctors">Full list</a>
+  </div>
+
+  <div class="rail" tabindex="0" aria-label="Featured consultants. Scroll sideways.">
+    @for (doctor of featuredDoctors(); track doctor.id; let i = $index) {
+      <article class="rail-card" appReveal [appRevealDelay]="i * 60">
+        <div class="rail-photo" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
+          @if (doctor.photo) {
+            <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
+          } @else {
+            @if (slides().length) {
+              <img [src]="slides()[i % slides().length].src | mediaUrl" [alt]="''" aria-hidden="true" />
+            }
+            <span>{{ doctor.initials }}</span>
+          }
+        </div>
+        <p class="doctor-specialty">{{ doctor.specialty }}</p>
+        <h3>{{ doctor.name }}</h3>
+        <p class="doctor-credentials">{{ doctor.credentials }}</p>
+        <p>{{ doctor.bio }}</p>
+        <p class="doctor-days">Consults {{ doctor.days }}</p>
+        <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
+          Request this consultant
+        </a>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="visit-panel wrap">
+  <div class="visit-copy" appReveal>
+    <p class="kicker">Your visit</p>
+    <h2>Three steps, then a consulting room.</h2>
+    <ol class="steps">
+      @for (step of steps; track step.title; let index = $index) {
+        <li appReveal [appRevealDelay]="index * 90">
+          <span>{{ index + 1 }}</span>
+          <div>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+
+  <aside class="visit-card visit-float" appReveal [appRevealDelay]="120">
+    <div class="visit-media">
+      <img src="banners/clinic-consulting.jpg" alt="Consulting room at Meridian Clinic" />
+    </div>
+    <p class="panel-label">Find the clinic</p>
+    <address>
+      @for (line of clinic().addressLines; track line) {
+        <span>{{ line }}</span>
+      }
+    </address>
+    <a class="btn btn-dark" routerLink="/contact">Go to the enquiry desk</a>
+    <p class="fine">
+      Chest pain, severe breathlessness, heavy bleeding, or a very unwell child need urgent care, not this form.
+    </p>
+  </aside>
+</section>
+
+<section class="cta-band" appReveal>
+  <div class="wrap cta-inner">
+    <p class="kicker kicker-light">Enquiry desk</p>
+    <h2>Ready when you are.</h2>
+    <p class="lede lede-light">Send a short note. We call back during clinic hours with a consultant and a time.</p>
+    <a class="btn btn-light" routerLink="/contact">Start an enquiry</a>
+  </div>
+</section>

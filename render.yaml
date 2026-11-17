@@ -1,0 +1,57 @@
+# Meridian Clinic on Render
+# - clinic-web: Angular public site + admin UI (static)
+# - clinic-api: Node.js API + image uploads
+#
+# Prerequisites:
+# 1. Push this repo to GitHub/GitLab/Bitbucket
+# 2. Create a free MongoDB Atlas cluster and connection string
+# 3. Apply this Blueprint in the Render Dashboard
+
+services:
+  - type: web
+    name: clinic-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.5"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CORS_ORIGIN
+        fromService:
+          name: clinic-web
+          type: web
+          property: host
+      - key: UPLOADS_DIR
+        value: /opt/render/project/src/backend/uploads
+
+  - type: web
+    name: clinic-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist/clinic/browser
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: sameorigin
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.5"

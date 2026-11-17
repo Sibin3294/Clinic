@@ -1,0 +1,86 @@
+<div class="admin-page">
+  <header class="admin-page-head">
+    <h1>Services</h1>
+    <p class="lede">Clinic services listed on the public services page and home page.</p>
+  </header>
+
+  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
+  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
+
+  <div class="admin-toolbar">
+    <button type="button" class="btn-add" (click)="startCreate()">Add service</button>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Duration</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of items(); track item.id) {
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.department }}</td>
+            <td>{{ item.duration }}</td>
+            <td>
+              <span class="admin-badge" [class.is-on]="item.active !== false" [class.is-off]="item.active === false">
+                {{ item.active === false ? 'Hidden' : 'Active' }}
+              </span>
+            </td>
+            <td class="admin-actions">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+              <button type="button" class="btn-danger" (click)="remove(item)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (formOpen()) {
+  <div class="admin-modal-backdrop" (click)="closeForm()" role="presentation">
+    <div
+      class="admin-modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="editingId() ? 'Edit service' : 'New service'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="admin-modal-head">
+        <h2>{{ editingId() ? 'Edit service' : 'New service' }}</h2>
+        <button type="button" class="admin-modal-close" (click)="closeForm()" aria-label="Close">×</button>
+      </div>
+
+      @if (formError()) {
+        <p class="admin-msg error">{{ formError() }}</p>
+      }
+
+      <form class="admin-form" [formGroup]="form" (ngSubmit)="save()">
+        <div class="grid">
+          <label>Name <input formControlName="name" /></label>
+          <label>Department <input formControlName="department" /></label>
+          <label>Duration <input formControlName="duration" /></label>
+          <label>Order <input type="number" formControlName="order" /></label>
+          <label class="checkbox">
+            <span>Active on public site</span>
+            <input type="checkbox" formControlName="active" />
+          </label>
+        </div>
+        <label>Summary <textarea formControlName="summary"></textarea></label>
+        <label>Includes (one per line) <textarea formControlName="includes"></textarea></label>
+        <label>Suited for <textarea formControlName="suitedFor"></textarea></label>
+        <div class="admin-actions">
+          <button type="button" class="btn-muted" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="btn-save">Save service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

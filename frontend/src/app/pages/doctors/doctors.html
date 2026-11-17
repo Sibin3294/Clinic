@@ -1,0 +1,43 @@
+<header class="page-hero wrap">
+  <p class="kicker">Consultants</p>
+  <h1>The doctors at Meridian.</h1>
+  <p class="lede">
+    Six consultants share one front desk. Choose a specialty, or send an enquiry and we will suggest
+    who should see you first.
+  </p>
+</header>
+
+<div class="wrap filters" role="group" aria-label="Filter by specialty">
+  @for (item of filters(); track item) {
+    <button type="button" [class.is-active]="specialty() === item" [attr.aria-pressed]="specialty() === item" (click)="select(item)">
+      {{ item }}
+    </button>
+  }
+</div>
+
+<section class="section wrap doctor-grid">
+  @for (doctor of visible(); track doctor.id) {
+    <article class="doctor-card">
+      <div class="portrait" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
+        @if (doctor.photo) {
+          <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
+        } @else {
+          {{ doctor.initials }}
+        }
+      </div>
+      <p class="doctor-specialty">{{ doctor.specialty }}</p>
+      <h2>{{ doctor.name }}</h2>
+      <p class="doctor-credentials">{{ doctor.credentials }} · {{ doctor.years }} years in practice</p>
+      <p>{{ doctor.bio }}</p>
+      <ul class="tags">
+        @for (item of doctor.focus; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <p class="doctor-days">Consults {{ doctor.days }}</p>
+      <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
+        Request this consultant
+      </a>
+    </article>
+  }
+</section>

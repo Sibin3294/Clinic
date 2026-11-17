@@ -1,0 +1,108 @@
+<div class="admin-page">
+  <header class="admin-page-head">
+    <h1>Banners</h1>
+    <p class="lede">Upload an image for the home slideshow, or keep an existing path/URL.</p>
+  </header>
+
+  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
+  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
+
+  <div class="admin-toolbar">
+    <button type="button" class="btn-add" (click)="startCreate()">Add banner</button>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Preview</th>
+          <th>Label</th>
+          <th>Image</th>
+          <th>Order</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of items(); track item.id) {
+          <tr>
+            <td>
+              <img class="admin-thumb" [src]="item.src | mediaUrl" [alt]="item.alt" />
+            </td>
+            <td>{{ item.label }}</td>
+            <td class="admin-path">{{ item.src }}</td>
+            <td>{{ item.order }}</td>
+            <td>
+              <span class="admin-badge" [class.is-on]="item.active" [class.is-off]="!item.active">
+                {{ item.active ? 'Active' : 'Hidden' }}
+              </span>
+            </td>
+            <td class="admin-actions">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+              <button type="button" class="btn-danger" (click)="remove(item)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (formOpen()) {
+  <div class="admin-modal-backdrop" (click)="closeForm()" role="presentation">
+    <div
+      class="admin-modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="editingId() ? 'Edit banner' : 'New banner'"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="admin-modal-head">
+        <h2>{{ editingId() ? 'Edit banner' : 'New banner' }}</h2>
+        <button type="button" class="admin-modal-close" (click)="closeForm()" aria-label="Close">×</button>
+      </div>
+
+      @if (formError()) {
+        <p class="admin-msg error">{{ formError() }}</p>
+      }
+
+      <form class="admin-form" [formGroup]="form" (ngSubmit)="save()">
+        <div class="grid">
+          <label>Label <input formControlName="label" /></label>
+          <label>Order <input type="number" formControlName="order" /></label>
+          <label class="checkbox">
+            <span>Active on home page</span>
+            <input type="checkbox" formControlName="active" />
+          </label>
+        </div>
+
+        <div class="upload-block">
+          <label>
+            Upload image
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onFileSelected($event)" />
+          </label>
+          <p class="upload-hint">JPEG, PNG, WebP, or GIF · max 5 MB</p>
+          @if (uploading()) {
+            <p class="upload-hint">Uploading…</p>
+          }
+          @if (form.controls.src.value) {
+            <div class="upload-preview">
+              <img [src]="form.controls.src.value | mediaUrl" alt="Banner preview" />
+              <p class="admin-path">{{ form.controls.src.value }}</p>
+            </div>
+          }
+        </div>
+
+        <label>
+          Image path / URL
+          <input formControlName="src" placeholder="/uploads/… or banners/…" />
+        </label>
+        <label>Alt text <textarea formControlName="alt"></textarea></label>
+        <div class="admin-actions">
+          <button type="button" class="btn-muted" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="btn-save" [disabled]="uploading()">Save banner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

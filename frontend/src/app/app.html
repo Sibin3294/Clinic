@@ -1,0 +1,84 @@
+@if (!isAdminArea()) {
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" [style.--progress]="progress()" aria-hidden="true"></div>
+
+  <div class="announce">
+    <div class="wrap announce-inner">
+      <p>{{ clinic().announcement }}</p>
+      <a routerLink="/contact" (click)="closeMenu()">Send an enquiry</a>
+    </div>
+  </div>
+
+  <header class="nav" [class.is-scrolled]="scrolled()">
+    <div class="wrap nav-inner">
+      <a class="brand" routerLink="/" (click)="closeMenu()">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="32" height="32">
+            <rect width="32" height="32" rx="9" fill="currentColor" />
+            <path d="M16 8.5v15M10.5 16h11" stroke="#f4efe6" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">Meridian</span>
+          <span class="brand-meta">Clinic · {{ clinic().city }}</span>
+        </span>
+      </a>
+
+      <button
+        type="button"
+        class="nav-toggle"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="site-nav"
+      >
+        <span class="sr-only">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+        <span class="nav-toggle-icon" [class.is-open]="menuOpen()" aria-hidden="true"></span>
+      </button>
+
+      <nav id="site-nav" class="nav-panel" [class.is-open]="menuOpen()" aria-label="Primary">
+        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+        <a routerLink="/doctors" routerLinkActive="is-active" (click)="closeMenu()">Doctors</a>
+        <a routerLink="/services" routerLinkActive="is-active" (click)="closeMenu()">Services</a>
+        <a routerLink="/contact" routerLinkActive="is-active" (click)="closeMenu()">Contact</a>
+        <a class="btn btn-dark nav-cta" routerLink="/contact" (click)="closeMenu()">Book a visit</a>
+      </nav>
+    </div>
+  </header>
+}
+
+<main id="main" [class.admin-main]="isAdminArea()">
+  <router-outlet />
+</main>
+
+@if (!isAdminArea()) {
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="brand-name footer-name">{{ clinic().name }}</p>
+        <p class="footer-lede">Consultant-led outpatient care in {{ clinic().city }}. Same doctor, enough time, a plan you can read.</p>
+      </div>
+      <div>
+        <p class="footer-label">Visit</p>
+        <address>
+          @for (line of clinic().addressLines; track line) {
+            <span>{{ line }}</span>
+          }
+        </address>
+        <a [href]="clinic().phoneHref">{{ clinic().phoneDisplay }}</a>
+        <a [href]="'mailto:' + clinic().email">{{ clinic().email }}</a>
+      </div>
+      <div>
+        <p class="footer-label">Hours</p>
+        <ul class="footer-hours">
+          @for (row of clinic().hours; track row.days) {
+            <li><span>{{ row.days }}</span><span>{{ row.time }}</span></li>
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="wrap footer-base">
+      <p>© {{ year }} {{ clinic().name }}.</p>
+      <a routerLink="/contact" (click)="closeMenu()">Enquiry desk</a>
+    </div>
+  </footer>
+}

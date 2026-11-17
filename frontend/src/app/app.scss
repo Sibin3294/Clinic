@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.nav {
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.nav.is-scrolled {
+  background: rgba(255, 253, 248, 0.78);
+  border-bottom-color: transparent;
+  box-shadow: 0 10px 40px rgba(18, 53, 47, 0.08);
+  backdrop-filter: blur(18px);
+}

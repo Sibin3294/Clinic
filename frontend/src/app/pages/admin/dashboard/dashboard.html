@@ -1,0 +1,105 @@
+<div class="admin-page dashboard-page">
+  <header class="dash-hero">
+    <div>
+      <p class="dash-kicker">{{ today }}</p>
+      <h1>Welcome back{{ admin()?.name ? ', ' + admin()!.name.split(' ')[0] : '' }}</h1>
+      <p class="lede">A live snapshot of clinic content and enquiries.</p>
+    </div>
+    <a class="dash-site-link" routerLink="/" target="_blank" rel="noopener">Open public site</a>
+  </header>
+
+  @if (loading()) {
+    <p class="admin-msg">Loading dashboard…</p>
+  } @else {
+    <section class="dash-stats" aria-label="Key metrics">
+      <a class="dash-stat" routerLink="/admin/banners">
+        <span class="dash-stat-label">Banners</span>
+        <strong>{{ stats().banners }}</strong>
+        <span class="dash-stat-meta">{{ stats().bannersActive }} active on the home page</span>
+      </a>
+      <a class="dash-stat tone-gold" routerLink="/admin/doctors">
+        <span class="dash-stat-label">Doctors</span>
+        <strong>{{ stats().doctors }}</strong>
+        <span class="dash-stat-meta">{{ stats().doctorsActive }} visible to visitors</span>
+      </a>
+      <a class="dash-stat tone-clay" routerLink="/admin/services">
+        <span class="dash-stat-label">Services</span>
+        <strong>{{ stats().services }}</strong>
+        <span class="dash-stat-meta">{{ stats().servicesActive }} published</span>
+      </a>
+      <a class="dash-stat tone-ink" routerLink="/admin/enquiries">
+        <span class="dash-stat-label">Enquiries</span>
+        <strong>{{ stats().enquiries }}</strong>
+        <span class="dash-stat-meta">{{ stats().enquiriesNew }} waiting for a reply</span>
+      </a>
+    </section>
+
+    <section class="dash-charts" aria-label="Charts">
+      <article class="dash-panel">
+        <div class="dash-panel-head">
+          <h2>Doctors by specialty</h2>
+          <p>How the consultant list is split today</p>
+        </div>
+        <div class="dash-chart-wrap">
+          <canvas #specialtyChart aria-label="Pie chart of doctors by specialty"></canvas>
+        </div>
+      </article>
+
+      <article class="dash-panel">
+        <div class="dash-panel-head">
+          <h2>Enquiry status</h2>
+          <p>New, contacted, and closed messages</p>
+        </div>
+        <div class="dash-chart-wrap">
+          <canvas #enquiryChart aria-label="Pie chart of enquiry statuses"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <section class="dash-lower">
+      <article class="dash-panel">
+        <div class="dash-panel-head row">
+          <div>
+            <h2>Recent enquiries</h2>
+            <p>Latest messages from the contact form</p>
+          </div>
+          <a routerLink="/admin/enquiries">View all</a>
+        </div>
+
+        <div class="dash-table-wrap">
+          <table class="admin-table dash-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of recentEnquiries(); track item.id) {
+                <tr>
+                  <td>
+                    <strong>{{ item.reference }}</strong>
+                    <div class="dash-muted">{{ item.preferredDate }}</div>
+                  </td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.department }}</td>
+                  <td>
+                    <span class="dash-status" [attr.data-status]="item.status || 'new'">
+                      {{ item.status || 'new' }}
+                    </span>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4">No enquiries yet. New ones will appear here.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  }
+</div>

@@ -1,0 +1,30 @@
+<div class="admin-page">
+  <header class="admin-page-head">
+    <h1>Clinic profile</h1>
+    <p class="lede">Name, hours, contact details, and departments used across the site.</p>
+  </header>
+
+  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
+  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
+
+  <form class="admin-form" [formGroup]="form" (ngSubmit)="save()">
+    <h2>Profile details</h2>
+    <div class="grid">
+      <label>Name <input formControlName="name" /></label>
+      <label>City <input formControlName="city" /></label>
+      <label>Tagline <input formControlName="tagline" /></label>
+      <label>Phone display <input formControlName="phoneDisplay" /></label>
+      <label>Phone href <input formControlName="phoneHref" /></label>
+      <label>Email <input formControlName="email" /></label>
+    </div>
+    <label>Announcement <input formControlName="announcement" /></label>
+    <label>Lede <textarea formControlName="lede"></textarea></label>
+    <label>Address lines (one per line) <textarea formControlName="addressLines"></textarea></label>
+    <label>Hours (one per line as Days|Time) <textarea formControlName="hours"></textarea></label>
+    <label>Notes (one per line) <textarea formControlName="notes"></textarea></label>
+    <label>Departments (one per line) <textarea formControlName="departments"></textarea></label>
+    <div class="admin-actions">
+      <button type="submit" class="btn-save">Save profile</button>
+    </div>
+  </form>
+</div>

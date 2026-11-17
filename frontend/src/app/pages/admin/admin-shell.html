@@ -1,0 +1,24 @@
+<div class="admin">
+  <aside class="admin-nav">
+    <div class="admin-brand">
+      <strong>Meridian</strong>
+      <span>Admin desk</span>
+    </div>
+    <nav>
+      <a routerLink="/admin" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/admin/banners" routerLinkActive="is-active">Banners</a>
+      <a routerLink="/admin/doctors" routerLinkActive="is-active">Doctors</a>
+      <a routerLink="/admin/services" routerLinkActive="is-active">Services</a>
+      <a routerLink="/admin/clinic" routerLinkActive="is-active">Clinic profile</a>
+      <a routerLink="/admin/enquiries" routerLinkActive="is-active">Enquiries</a>
+    </nav>
+    <div class="admin-nav-foot">
+      <p>{{ admin()?.email }}</p>
+      <a routerLink="/">View site</a>
+      <button type="button" class="btn-logout" (click)="logout()">Log out</button>
+    </div>
+  </aside>
+  <section class="admin-body">
+    <router-outlet />
+  </section>
+</div>
