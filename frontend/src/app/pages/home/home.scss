@@ -578,10 +578,17 @@
 
   .banner-actions {
     width: 100%;
+    flex-wrap: nowrap;
+    gap: 8px;
   }
 
   .banner-actions .btn {
-    flex: 1 1 100%;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: 0.88rem;
+    white-space: nowrap;
   }
 
   .banner-facts {
