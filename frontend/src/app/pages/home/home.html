@@ -143,28 +143,69 @@
     <a class="text-link" routerLink="/doctors">Full list</a>
   </div>
 
-  <div class="rail" tabindex="0" aria-label="Featured consultants. Scroll sideways.">
-    @for (doctor of featuredDoctors(); track doctor.id; let i = $index) {
-      <article class="rail-card" appReveal [appRevealDelay]="i * 60">
-        <div class="rail-photo" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
-          @if (doctor.photo) {
-            <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
-          } @else {
-            @if (slides().length) {
-              <img [src]="slides()[i % slides().length].src | mediaUrl" [alt]="''" aria-hidden="true" />
-            }
-            <span>{{ doctor.initials }}</span>
+  <div class="wrap doctor-carousel" [style.--per]="doctorsPerView()" aria-roledescription="carousel" aria-label="Consultants">
+    <div class="doctor-carousel-shell">
+      <button
+        type="button"
+        class="doctor-carousel-btn is-prev"
+        (click)="prevDoctor()"
+        [disabled]="doctorIndex() === 0"
+        aria-label="Previous consultants"
+      >
+        ‹
+      </button>
+
+      <div class="doctor-carousel-viewport">
+        <div class="doctor-carousel-track" [style.transform]="doctorTrackTransform()">
+          @for (doctor of carouselDoctors(); track doctor.id; let i = $index) {
+            <article class="rail-card" aria-roledescription="slide" [attr.aria-label]="doctor.name">
+              <div class="rail-photo" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
+                @if (doctor.photo) {
+                  <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
+                } @else {
+                  @if (slides().length) {
+                    <img [src]="slides()[i % slides().length].src | mediaUrl" [alt]="''" aria-hidden="true" />
+                  }
+                  <span>{{ doctor.initials }}</span>
+                }
+              </div>
+              <p class="doctor-specialty">{{ doctor.specialty }}</p>
+              <h3>{{ doctor.name }}</h3>
+              <p class="doctor-credentials">{{ doctor.credentials }}</p>
+              <p>{{ doctor.bio }}</p>
+              <p class="doctor-days">Consults {{ doctor.days }}</p>
+              <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
+                Request this consultant
+              </a>
+            </article>
           }
         </div>
-        <p class="doctor-specialty">{{ doctor.specialty }}</p>
-        <h3>{{ doctor.name }}</h3>
-        <p class="doctor-credentials">{{ doctor.credentials }}</p>
-        <p>{{ doctor.bio }}</p>
-        <p class="doctor-days">Consults {{ doctor.days }}</p>
-        <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
-          Request this consultant
-        </a>
-      </article>
+      </div>
+
+      <button
+        type="button"
+        class="doctor-carousel-btn is-next"
+        (click)="nextDoctor()"
+        [disabled]="doctorIndex() >= doctorMaxIndex()"
+        aria-label="Next consultants"
+      >
+        ›
+      </button>
+    </div>
+
+    @if (doctorMaxIndex() > 0) {
+      <div class="doctor-carousel-dots" role="tablist" aria-label="Consultant slides">
+        @for (dot of doctorDots(); track dot; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            [class.is-active]="doctorIndex() === i"
+            [attr.aria-selected]="doctorIndex() === i"
+            [attr.aria-label]="'Show consultants group ' + (i + 1)"
+            (click)="goDoctor(i)"
+          ></button>
+        }
+      </div>
     }
   </div>
 </section>

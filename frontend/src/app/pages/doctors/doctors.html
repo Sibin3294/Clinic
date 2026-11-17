@@ -15,29 +15,79 @@
   }
 </div>
 
-<section class="section wrap doctor-grid">
-  @for (doctor of visible(); track doctor.id) {
-    <article class="doctor-card">
-      <div class="portrait" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
-        @if (doctor.photo) {
-          <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
-        } @else {
-          {{ doctor.initials }}
+<section
+  class="section wrap doctor-carousel doctors-page-carousel"
+  [style.--per]="doctorsPerView()"
+  aria-roledescription="carousel"
+  aria-label="Doctors"
+>
+  @if (visible().length === 0) {
+    <p class="doctor-carousel-empty">No consultants match this specialty yet.</p>
+  } @else {
+    <div class="doctor-carousel-shell">
+      <button
+        type="button"
+        class="doctor-carousel-btn is-prev"
+        (click)="prevDoctor()"
+        [disabled]="doctorIndex() === 0"
+        aria-label="Previous doctors"
+      >
+        ‹
+      </button>
+
+      <div class="doctor-carousel-viewport">
+        <div class="doctor-carousel-track" [style.transform]="doctorTrackTransform()">
+          @for (doctor of visible(); track doctor.id) {
+            <article class="doctor-card" aria-roledescription="slide" [attr.aria-label]="doctor.name">
+              <div class="portrait" [attr.data-tone]="doctor.tone" [class.has-photo]="!!doctor.photo">
+                @if (doctor.photo) {
+                  <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
+                } @else {
+                  {{ doctor.initials }}
+                }
+              </div>
+              <p class="doctor-specialty">{{ doctor.specialty }}</p>
+              <h2>{{ doctor.name }}</h2>
+              <p class="doctor-credentials">{{ doctor.credentials }} · {{ doctor.years }} years in practice</p>
+              <p>{{ doctor.bio }}</p>
+              <ul class="tags">
+                @for (item of doctor.focus; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+              <p class="doctor-days">Consults {{ doctor.days }}</p>
+              <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
+                Request this consultant
+              </a>
+            </article>
+          }
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="doctor-carousel-btn is-next"
+        (click)="nextDoctor()"
+        [disabled]="doctorIndex() >= doctorMaxIndex()"
+        aria-label="Next doctors"
+      >
+        ›
+      </button>
+    </div>
+
+    @if (doctorMaxIndex() > 0) {
+      <div class="doctor-carousel-dots" role="tablist" aria-label="Doctor slides">
+        @for (dot of doctorDots(); track dot; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            [class.is-active]="doctorIndex() === i"
+            [attr.aria-selected]="doctorIndex() === i"
+            [attr.aria-label]="'Show doctors group ' + (i + 1)"
+            (click)="goDoctor(i)"
+          ></button>
         }
       </div>
-      <p class="doctor-specialty">{{ doctor.specialty }}</p>
-      <h2>{{ doctor.name }}</h2>
-      <p class="doctor-credentials">{{ doctor.credentials }} · {{ doctor.years }} years in practice</p>
-      <p>{{ doctor.bio }}</p>
-      <ul class="tags">
-        @for (item of doctor.focus; track item) {
-          <li>{{ item }}</li>
-        }
-      </ul>
-      <p class="doctor-days">Consults {{ doctor.days }}</p>
-      <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
-        Request this consultant
-      </a>
-    </article>
+    }
   }
 </section>

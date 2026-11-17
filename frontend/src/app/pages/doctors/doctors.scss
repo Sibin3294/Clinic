@@ -1,0 +1,119 @@
+.doctors-page-carousel {
+  --per: 3;
+  --gap: 18px;
+}
+
+.doctor-carousel-empty {
+  margin: 0;
+  padding: 1.25rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper-strong);
+  color: var(--ink-soft);
+}
+
+.doctor-carousel-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-carousel-viewport {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.doctor-carousel-track {
+  display: flex;
+  width: 100%;
+  gap: var(--gap);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.doctor-carousel-track > .doctor-card {
+  flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));
+  min-width: 0;
+  max-width: calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));
+  box-sizing: border-box;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+}
+
+.doctor-carousel-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper-strong);
+  color: var(--pine);
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(18, 53, 47, 0.06);
+  transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.doctor-carousel-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.doctor-carousel-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.doctor-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.doctor-carousel-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pine) 22%, white);
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.doctor-carousel-dots button.is-active {
+  width: 22px;
+  background: var(--pine);
+}
+
+@media (max-width: 800px) {
+  .doctor-carousel-shell {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .doctor-carousel-btn {
+    position: absolute;
+    top: 38%;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 253, 248, 0.94);
+  }
+
+  .doctor-carousel-btn.is-prev {
+    left: 6px;
+  }
+
+  .doctor-carousel-btn.is-next {
+    right: 6px;
+  }
+
+  .doctor-carousel-track > .doctor-card {
+    padding: 18px;
+  }
+}
