@@ -54,7 +54,7 @@ services:
       - path: /*
         name: X-Frame-Options
         value: sameorigin
-      - path: /services/*
+      - path: /media/*
         name: Cache-Control
         value: public, max-age=86400
       - path: /banners/*
