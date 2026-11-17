@@ -516,9 +516,12 @@
 }
 
 .rail-photo img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -530,6 +533,8 @@
 .rail-photo img.doctor-placeholder {
   filter: none;
   opacity: 1;
+  object-fit: cover;
+  object-position: center 18%;
 }
 
 .rail-photo span {
@@ -846,6 +851,22 @@
 
   .doctor-carousel-track > .rail-card {
     padding: 16px;
+  }
+
+  .rail-photo {
+    aspect-ratio: 1;
+  }
+
+  .rail-photo img.doctor-placeholder {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .rail-photo span {
+    left: 10px;
+    bottom: 10px;
+    min-width: 42px;
+    height: 42px;
   }
 
   .visit-panel {
