@@ -1009,16 +1009,8 @@ address {
     width: min(1120px, calc(100% - 28px));
   }
 
-  .announce-inner {
-    justify-content: center;
-    text-align: center;
-    gap: 4px;
-    padding-block: 8px;
-    min-height: 0;
-  }
-
-  .announce a {
-    white-space: normal;
+  .announce {
+    display: none;
   }
 
   .nav-inner {
