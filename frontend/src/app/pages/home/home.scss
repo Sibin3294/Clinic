@@ -171,40 +171,6 @@
   background: var(--pine);
 }
 
-.scroll-cue {
-  position: absolute;
-  right: max(20px, calc((100% - 1120px) / 2));
-  bottom: 34px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: rgba(247, 241, 230, 0.72);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.scroll-cue::after {
-  content: '';
-  width: 1px;
-  height: 42px;
-  background: linear-gradient(180deg, rgba(247, 241, 230, 0.8), transparent);
-  animation: cue 1.8s ease-in-out infinite;
-}
-
-@keyframes cue {
-  0%,
-  100% {
-    transform: scaleY(0.55);
-    opacity: 0.4;
-  }
-  50% {
-    transform: scaleY(1);
-    opacity: 1;
-  }
-}
-
 .service-index {
   border-block: 1px solid var(--line);
   background:
@@ -748,10 +714,6 @@
     flex-shrink: 0;
   }
 
-  .scroll-cue {
-    display: none;
-  }
-
   .service-index {
     padding: 22px 0;
   }
@@ -917,7 +879,6 @@
     transform: none !important;
   }
 
-  .scroll-cue::after,
   .stage-photo img {
     animation: none;
     transition: none;
