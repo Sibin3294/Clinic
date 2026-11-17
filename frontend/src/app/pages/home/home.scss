@@ -603,7 +603,33 @@
   }
 
   .banner-switch {
+    flex-wrap: nowrap;
+    gap: 6px;
     padding-bottom: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .banner-switch::-webkit-scrollbar {
+    display: none;
+  }
+
+  .banner-switch button {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .banner-switch .dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
   }
 
   .scroll-cue {
@@ -686,7 +712,9 @@
   }
 
   .banner-switch button {
-    min-height: 40px;
+    min-height: 34px;
+    padding: 0 6px;
+    font-size: 0.74rem;
   }
 
   .stage-photo {
