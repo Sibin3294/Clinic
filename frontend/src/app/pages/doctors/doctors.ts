@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { DOCTOR_PLACEHOLDER } from '../../core/doctor-placeholder';
 import { createLoopCarousel } from '../../core/loop-carousel';
 import { MediaUrlPipe } from '../../core/media-url.pipe';
 
@@ -41,6 +42,7 @@ export class Doctors {
   readonly doctorTrackTransform = computed(
     () => `translate3d(calc(-${this.doctorIndex()} * (100% + var(--gap)) / var(--per)), 0, 0)`,
   );
+  readonly doctorPlaceholder = DOCTOR_PLACEHOLDER;
 
   constructor() {
     this.doctorCarousel = createLoopCarousel({

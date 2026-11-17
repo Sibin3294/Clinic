@@ -27,11 +27,14 @@
         @for (item of items(); track item.id) {
           <tr>
             <td>
-              @if (item.photo) {
-                <img class="admin-thumb admin-thumb-round" [src]="item.photo | mediaUrl" [alt]="item.name" />
-              } @else {
-                <span class="admin-avatar-fallback" [attr.data-tone]="item.tone">{{ item.initials }}</span>
-              }
+              <span class="admin-avatar" [attr.data-tone]="item.tone">
+                @if (item.photo) {
+                  <img class="admin-thumb admin-thumb-round" [src]="item.photo | mediaUrl" [alt]="item.name" />
+                } @else {
+                  <img class="admin-thumb admin-thumb-round doctor-placeholder" [src]="doctorPlaceholder" [alt]="''" aria-hidden="true" />
+                  <span class="admin-avatar-letters">{{ item.initials }}</span>
+                }
+              </span>
             </td>
             <td>{{ item.name }}</td>
             <td>{{ item.specialty }}</td>

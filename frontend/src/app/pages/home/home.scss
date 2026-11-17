@@ -512,14 +512,14 @@
   border-radius: 18px;
   aspect-ratio: 4 / 3;
   margin-bottom: 6px;
+  background: #efe9de;
 }
 
 .rail-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.85);
-  opacity: 0.88;
+  display: block;
 }
 
 .rail-photo.has-photo img {
@@ -527,8 +527,9 @@
   opacity: 1;
 }
 
-.rail-photo.has-photo {
-  background: #efe9de;
+.rail-photo img.doctor-placeholder {
+  filter: none;
+  opacity: 1;
 }
 
 .rail-photo span {
@@ -538,17 +539,22 @@
   z-index: 1;
   display: grid;
   place-items: center;
-  width: 48px;
+  min-width: 48px;
   height: 48px;
+  padding: 0 0.55rem;
   border-radius: 14px;
-  background: rgba(255, 253, 248, 0.92);
+  background: rgba(255, 253, 248, 0.94);
+  border: 1px solid rgba(228, 220, 207, 0.95);
   font-family: var(--serif);
+  box-shadow: 0 8px 18px rgba(18, 53, 47, 0.08);
 }
 
 .rail-photo[data-tone='pine'] span { color: #0e4f46; }
 .rail-photo[data-tone='copper'] span { color: #8a4b2f; }
 .rail-photo[data-tone='gold'] span { color: #7a6230; }
 .rail-photo[data-tone='clay'] span { color: #8d3328; }
+.rail-photo[data-tone='sage'] span { color: #3d5c45; }
+.rail-photo[data-tone='ink'] span { color: #243e4a; }
 
 .visit-panel {
   display: grid;

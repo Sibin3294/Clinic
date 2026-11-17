@@ -48,7 +48,8 @@
                 @if (doctor.photo) {
                   <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
                 } @else {
-                  {{ doctor.initials }}
+                  <img class="doctor-placeholder" [src]="doctorPlaceholder" [alt]="''" aria-hidden="true" />
+                  <span class="portrait-initials">{{ doctor.initials }}</span>
                 }
               </div>
               <p class="doctor-specialty">{{ doctor.specialty }}</p>

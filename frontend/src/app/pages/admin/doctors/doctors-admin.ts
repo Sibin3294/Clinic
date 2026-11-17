@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Doctor } from '../../../core/clinic.models';
 import { confirmDelete } from '../../../core/confirm-dialog';
 import { ContentService } from '../../../core/content.service';
+import { DOCTOR_PLACEHOLDER } from '../../../core/doctor-placeholder';
 import { MediaUrlPipe } from '../../../core/media-url.pipe';
 
 @Component({
@@ -14,6 +15,7 @@ import { MediaUrlPipe } from '../../../core/media-url.pipe';
 export class DoctorsAdmin {
   private readonly content = inject(ContentService);
   private readonly fb = inject(FormBuilder);
+  readonly doctorPlaceholder = DOCTOR_PLACEHOLDER;
 
   readonly items = signal<Doctor[]>([]);
   readonly formOpen = signal(false);

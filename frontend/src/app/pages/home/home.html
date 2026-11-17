@@ -170,9 +170,7 @@
                 @if (doctor.photo) {
                   <img [src]="doctor.photo | mediaUrl" [alt]="doctor.name" />
                 } @else {
-                  @if (slides().length) {
-                    <img [src]="slides()[i % slides().length].src | mediaUrl" [alt]="''" aria-hidden="true" />
-                  }
+                  <img class="doctor-placeholder" [src]="doctorPlaceholder" [alt]="''" aria-hidden="true" />
                   <span>{{ doctor.initials }}</span>
                 }
               </div>

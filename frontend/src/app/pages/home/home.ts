@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
 import { createLoopCarousel } from '../../core/loop-carousel';
 import { MediaUrlPipe } from '../../core/media-url.pipe';
+import { DOCTOR_PLACEHOLDER } from '../../core/doctor-placeholder';
 import { serviceImage } from '../../core/service-images';
 import { ScrollReveal } from '../../shared/scroll-reveal.directive';
 
@@ -49,6 +50,7 @@ export class Home {
   readonly active = signal(0);
   readonly parallax = signal(0);
   readonly serviceImage = serviceImage;
+  readonly doctorPlaceholder = DOCTOR_PLACEHOLDER;
   readonly steps = [
     {
       title: 'Tell us what you need',
