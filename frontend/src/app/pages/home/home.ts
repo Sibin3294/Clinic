@@ -11,7 +11,9 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { createLoopCarousel } from '../../core/loop-carousel';
 import { MediaUrlPipe } from '../../core/media-url.pipe';
+import { serviceImage } from '../../core/service-images';
 import { ScrollReveal } from '../../shared/scroll-reveal.directive';
 
 @Component({
@@ -25,6 +27,7 @@ export class Home {
   private readonly content = inject(ContentService);
   private timer: ReturnType<typeof setInterval> | undefined;
   private frame = 0;
+  private readonly doctorCarousel: ReturnType<typeof createLoopCarousel>;
 
   readonly banner = viewChild<ElementRef<HTMLElement>>('banner');
   readonly clinic = this.content.clinic;
@@ -45,6 +48,7 @@ export class Home {
   );
   readonly active = signal(0);
   readonly parallax = signal(0);
+  readonly serviceImage = serviceImage;
   readonly steps = [
     {
       title: 'Tell us what you need',
@@ -61,6 +65,13 @@ export class Home {
   ];
 
   constructor() {
+    this.doctorCarousel = createLoopCarousel({
+      index: this.doctorIndex,
+      maxIndex: () => this.doctorMaxIndex(),
+      destroyRef: this.destroyRef,
+      intervalMs: 4500,
+    });
+
     effect(() => {
       const count = this.slides().length;
       if (count === 0) {
@@ -84,12 +95,14 @@ export class Home {
       if (!reduceMotion) {
         this.start();
         this.bindParallax();
+        this.doctorCarousel.start();
       }
       this.updateDoctorsPerView();
       const onResize = () => this.updateDoctorsPerView();
       window.addEventListener('resize', onResize, { passive: true });
       this.destroyRef.onDestroy(() => {
         this.stop();
+        this.doctorCarousel.stop();
         cancelAnimationFrame(this.frame);
         window.removeEventListener('resize', onResize);
       });
@@ -105,15 +118,30 @@ export class Home {
   }
 
   prevDoctor(): void {
-    this.doctorIndex.update((index) => Math.max(0, index - 1));
+    this.doctorCarousel.prev();
+    this.doctorCarousel.bump();
   }
 
   nextDoctor(): void {
-    this.doctorIndex.update((index) => Math.min(this.doctorMaxIndex(), index + 1));
+    this.doctorCarousel.next();
+    this.doctorCarousel.bump();
   }
 
   goDoctor(index: number): void {
-    this.doctorIndex.set(Math.max(0, Math.min(this.doctorMaxIndex(), index)));
+    this.doctorCarousel.go(index);
+    this.doctorCarousel.bump();
+  }
+
+  onDoctorPointerDown(event: PointerEvent): void {
+    this.doctorCarousel.onPointerDown(event);
+  }
+
+  onDoctorPointerUp(event: PointerEvent): void {
+    this.doctorCarousel.onPointerUp(event);
+  }
+
+  onDoctorPointerCancel(): void {
+    this.doctorCarousel.onPointerCancel();
   }
 
   private updateDoctorsPerView(): void {

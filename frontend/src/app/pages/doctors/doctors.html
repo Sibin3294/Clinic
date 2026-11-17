@@ -35,7 +35,12 @@
         ‹
       </button>
 
-      <div class="doctor-carousel-viewport">
+      <div
+        class="doctor-carousel-viewport"
+        (pointerdown)="onDoctorPointerDown($event)"
+        (pointerup)="onDoctorPointerUp($event)"
+        (pointercancel)="onDoctorPointerCancel()"
+      >
         <div class="doctor-carousel-track" [style.transform]="doctorTrackTransform()">
           @for (doctor of visible(); track doctor.id) {
             <article class="doctor-card" aria-roledescription="slide" [attr.aria-label]="doctor.name">

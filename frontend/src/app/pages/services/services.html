@@ -9,7 +9,10 @@
 
 <section class="section wrap service-list">
   @for (service of services(); track service.id; let index = $index) {
-    <article class="service-row" [id]="service.id">
+    <article class="service-row has-media" [id]="service.id">
+      <div class="service-media" aria-hidden="true">
+        <img [src]="serviceImage(service.slug || service.id)" [alt]="''" />
+      </div>
       <div class="service-index">0{{ index + 1 }}</div>
       <div>
         <h2>{{ service.name }}</h2>

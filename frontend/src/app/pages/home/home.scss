@@ -357,12 +357,29 @@
 
 .stage-item {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 88px 56px 1fr auto;
   gap: 18px;
   align-items: start;
   padding: 28px 8px;
   border-top: 1px solid var(--line);
   transition: background 0.25s ease, padding 0.25s ease;
+}
+
+.stage-thumb {
+  display: block;
+  width: 88px;
+  height: 72px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #efe9de;
+  border: 1px solid var(--line);
+}
+
+.stage-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .stage-item:last-child {
@@ -415,6 +432,13 @@
 .doctor-carousel-viewport {
   overflow: hidden;
   min-width: 0;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+
+.doctor-carousel-viewport:active {
+  cursor: grabbing;
 }
 
 .doctor-carousel-track {
@@ -785,7 +809,7 @@
   }
 
   .stage-item {
-    grid-template-columns: 42px 1fr;
+    grid-template-columns: 72px 42px 1fr;
     padding: 22px 0;
   }
 
@@ -794,7 +818,13 @@
   }
 
   .stage-meta {
-    grid-column: 2;
+    grid-column: 2 / -1;
+  }
+
+  .stage-thumb {
+    width: 72px;
+    height: 60px;
+    border-radius: 12px;
   }
 
   .rail-section {

@@ -109,7 +109,7 @@
       <p class="lede">Scroll the list. Each service opens into a real consulting plan, not a brochure bullet.</p>
       <a class="text-link" routerLink="/services">All services</a>
       <div class="stage-photo">
-        <img src="banners/clinic-reception.jpg" alt="Reception desk at My Clinic" />
+        <img [src]="serviceImage(services()[0]?.slug || services()[0]?.id)" alt="Clinic services" />
       </div>
     </div>
 
@@ -122,6 +122,9 @@
           [routerLink]="['/services']"
           [fragment]="service.id"
         >
+          <span class="stage-thumb" aria-hidden="true">
+            <img [src]="serviceImage(service.slug || service.id)" [alt]="''" />
+          </span>
           <span class="stage-index">0{{ i + 1 }}</span>
           <div>
             <h3>{{ service.name }}</h3>
@@ -155,7 +158,12 @@
         ‹
       </button>
 
-      <div class="doctor-carousel-viewport">
+      <div
+        class="doctor-carousel-viewport"
+        (pointerdown)="onDoctorPointerDown($event)"
+        (pointerup)="onDoctorPointerUp($event)"
+        (pointercancel)="onDoctorPointerCancel()"
+      >
         <div class="doctor-carousel-track" [style.transform]="doctorTrackTransform()">
           @for (doctor of carouselDoctors(); track doctor.id; let i = $index) {
             <article class="rail-card" aria-roledescription="slide" [attr.aria-label]="doctor.name">
