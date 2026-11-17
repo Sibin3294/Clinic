@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-label="Diagnostics">
+  <defs>
+    <linearGradient id="svclabg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fffdf8"/>
+      <stop offset="100%" stop-color="#e4eef4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" rx="48" fill="url(#svclabg)"/>
+  <rect x="36" y="36" width="728" height="728" rx="40" fill="none" stroke="#2f5f78" stroke-opacity=".12" stroke-width="2"/>
+  <rect x="310" y="270" width="180" height="220" rx="24" fill="none" stroke="#2f5f78" stroke-width="14"/><path d="M345 340h110M345 390h80M345 440h95" stroke="#2f5f78" stroke-width="14" stroke-linecap="round"/>
+  <text x="400" y="650" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="42" fill="#2f5f78">Diagnostics</text>
+</svg>

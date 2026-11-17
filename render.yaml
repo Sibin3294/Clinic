@@ -46,6 +46,7 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: dist/clinic/browser
     routes:
+      # Keep SPA fallback, but let real static files win first.
       - type: rewrite
         source: /*
         destination: /index.html
@@ -53,6 +54,12 @@ services:
       - path: /*
         name: X-Frame-Options
         value: sameorigin
+      - path: /services/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /banners/*
+        name: Cache-Control
+        value: public, max-age=86400
     envVars:
       - key: NODE_VERSION
         value: "22.23.5"
