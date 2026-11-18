@@ -114,6 +114,8 @@
 }
 
 .dash-panel {
+  min-width: 0;
+  max-width: 100%;
   background: #fffdf8;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -157,6 +159,12 @@
 
 .dash-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.dash-table {
+  min-width: 28rem;
 }
 
 .dash-table td,
@@ -205,9 +213,12 @@
 @media (max-width: 720px) {
   .dash-hero,
   .dash-charts,
-  .dash-lower,
-  .dash-stats {
+  .dash-lower {
     grid-template-columns: 1fr;
+  }
+
+  .dash-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .dash-hero {
@@ -216,5 +227,17 @@
 
   .dash-site-link {
     justify-self: start;
+  }
+
+  .dash-stat {
+    padding: 0.9rem 0.85rem;
+  }
+
+  .dash-stat strong {
+    font-size: 1.7rem;
+  }
+
+  .dash-chart-wrap {
+    height: 220px;
   }
 }

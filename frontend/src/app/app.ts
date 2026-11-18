@@ -22,12 +22,22 @@ export class App {
   readonly menuOpen = signal(false);
   readonly progress = signal(0);
   readonly scrolled = signal(false);
-  readonly url = signal(this.router.url);
+  readonly url = signal(
+    typeof location !== 'undefined' ? location.pathname + location.search : this.router.url,
+  );
   readonly isAdminArea = computed(() => this.url().startsWith('/admin'));
 
   constructor() {
     this.content.loadPublicContent();
     this.auth.restoreSession();
+
+    const navSub = this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.url.set(event.urlAfterRedirects);
+        this.closeMenu();
+      });
+    this.destroyRef.onDestroy(() => navSub.unsubscribe());
 
     afterNextRender(() => {
       const onScroll = () => {
@@ -47,11 +57,9 @@ export class App {
         cancelAnimationFrame(this.frame);
       });
 
-      const sub = this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-        this.url.set(event.urlAfterRedirects);
-        this.closeMenu();
-        onScroll();
-      });
+      const sub = this.router.events
+        .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+        .subscribe(() => onScroll());
       this.destroyRef.onDestroy(() => sub.unsubscribe());
     });
   }

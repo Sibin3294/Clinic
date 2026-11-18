@@ -263,6 +263,12 @@
   box-shadow: 0 10px 28px rgba(18, 53, 47, 0.03);
 }
 
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
 .admin-form h2 {
   margin: 0;
   font-size: 1.25rem;
@@ -744,6 +750,11 @@
 @media (max-width: 860px) {
   .admin {
     grid-template-columns: 1fr;
+    overflow-x: clip;
+  }
+
+  .admin.is-menu-open {
+    overflow: hidden;
   }
 
   .admin-nav {
@@ -777,7 +788,7 @@
   }
 
   .admin-nav-backdrop {
-    display: block;
+    display: none;
     position: fixed;
     inset: 0;
     z-index: 21;
@@ -786,6 +797,10 @@
     margin: 0;
     background: rgba(15, 28, 24, 0.45);
     cursor: pointer;
+  }
+
+  .admin.is-menu-open .admin-nav-backdrop {
+    display: block;
   }
 
   .admin-nav-panel {
@@ -824,9 +839,20 @@
 
   .admin-body {
     padding: 1.1rem 1rem 1.75rem;
+    min-width: 0;
+    overflow-x: clip;
   }
 
   .admin-form .grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-actions button {
+    width: 100%;
   }
 }
