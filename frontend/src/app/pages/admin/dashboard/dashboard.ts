@@ -68,6 +68,8 @@ export class AdminDashboard {
     enquiriesNew: 0,
   });
   readonly recentEnquiries = signal<Enquiry[]>([]);
+  readonly hasSpecialtyChart = signal(false);
+  readonly hasEnquiryChart = signal(false);
 
   constructor() {
     forkJoin({
@@ -79,7 +81,8 @@ export class AdminDashboard {
       next: ({ banners, doctors, services, enquiries }) => {
         this.applyData(banners, doctors, services, enquiries);
         this.loading.set(false);
-        queueMicrotask(() => this.renderCharts());
+        // Wait for @if chart panels to mount before drawing canvases.
+        setTimeout(() => this.renderCharts());
       },
       error: () => this.loading.set(false),
     });
@@ -111,6 +114,9 @@ export class AdminDashboard {
       statusMap.set(key, (statusMap.get(key) || 0) + 1);
     }
 
+    const specialtyValues = specialties.map((item) => item.value);
+    const enquiryValues = statusOrder.map((key) => statusMap.get(key) || 0);
+
     this.stats.set({
       banners: banners.length,
       bannersActive: banners.filter((item) => item.active !== false).length,
@@ -122,12 +128,14 @@ export class AdminDashboard {
       enquiriesNew: statusMap.get('new') || 0,
     });
     this.recentEnquiries.set(enquiries.slice(0, 5));
+    this.hasSpecialtyChart.set(specialtyValues.some((value) => value > 0));
+    this.hasEnquiryChart.set(enquiryValues.some((value) => value > 0));
 
     this.chartData = {
       specialtyLabels: specialties.map((item) => item.label),
-      specialtyValues: specialties.map((item) => item.value),
+      specialtyValues,
       enquiryLabels: statusOrder.map((key) => key[0].toUpperCase() + key.slice(1)),
-      enquiryValues: statusOrder.map((key) => statusMap.get(key) || 0),
+      enquiryValues,
     };
   }
 
@@ -136,52 +144,44 @@ export class AdminDashboard {
       return;
     }
 
-    const specialtyEl = this.specialtyCanvas()?.nativeElement;
-    const enquiryEl = this.enquiryCanvas()?.nativeElement;
-    if (!specialtyEl || !enquiryEl) {
-      return;
-    }
-
     this.destroyCharts();
 
     const palette = ['#12352f', '#a68446', '#8d3328', '#3e544d', '#b56a3c', '#1c5349', '#6b7f74'];
+    const specialtyEl = this.specialtyCanvas()?.nativeElement;
+    const enquiryEl = this.enquiryCanvas()?.nativeElement;
 
-    this.specialtyChart = new Chart(
-      specialtyEl,
-      this.doughnutConfig(
-        this.chartData.specialtyLabels,
-        this.chartData.specialtyValues,
-        palette,
-        'No doctors yet',
-      ),
-    );
+    if (specialtyEl && this.hasSpecialtyChart()) {
+      this.specialtyChart = new Chart(
+        specialtyEl,
+        this.doughnutConfig(this.chartData.specialtyLabels, this.chartData.specialtyValues, palette),
+      );
+    }
 
-    this.enquiryChart = new Chart(
-      enquiryEl,
-      this.doughnutConfig(
-        this.chartData.enquiryLabels,
-        this.chartData.enquiryValues,
-        ['#a68446', '#1c5349', '#6b7f74'],
-        'No enquiries yet',
-      ),
-    );
+    if (enquiryEl && this.hasEnquiryChart()) {
+      this.enquiryChart = new Chart(
+        enquiryEl,
+        this.doughnutConfig(
+          this.chartData.enquiryLabels,
+          this.chartData.enquiryValues,
+          ['#a68446', '#1c5349', '#6b7f74'],
+        ),
+      );
+    }
   }
 
   private doughnutConfig(
     labels: string[],
     values: number[],
     colors: string[],
-    emptyText: string,
   ): ChartConfiguration<'doughnut'> {
-    const hasData = values.some((value) => value > 0);
     return {
       type: 'doughnut',
       data: {
-        labels: hasData ? labels : [emptyText],
+        labels,
         datasets: [
           {
-            data: hasData ? values : [1],
-            backgroundColor: hasData ? colors.slice(0, Math.max(labels.length, 1)) : ['#e4dccf'],
+            data: values,
+            backgroundColor: colors.slice(0, Math.max(labels.length, 1)),
             borderWidth: 0,
             hoverOffset: 6,
           },
@@ -203,9 +203,6 @@ export class AdminDashboard {
               color: '#3e544d',
               font: { family: 'Outfit, sans-serif', size: 12 },
             },
-          },
-          tooltip: {
-            enabled: hasData,
           },
         },
       },

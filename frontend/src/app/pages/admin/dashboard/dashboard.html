@@ -34,27 +34,33 @@
       </a>
     </section>
 
-    <section class="dash-charts" aria-label="Charts">
-      <article class="dash-panel">
-        <div class="dash-panel-head">
-          <h2>Doctors by specialty</h2>
-          <p>How the consultant list is split today</p>
-        </div>
-        <div class="dash-chart-wrap">
-          <canvas #specialtyChart aria-label="Pie chart of doctors by specialty"></canvas>
-        </div>
-      </article>
+    @if (hasSpecialtyChart() || hasEnquiryChart()) {
+      <section class="dash-charts" aria-label="Charts">
+        @if (hasSpecialtyChart()) {
+          <article class="dash-panel">
+            <div class="dash-panel-head">
+              <h2>Doctors by specialty</h2>
+              <p>How the consultant list is split today</p>
+            </div>
+            <div class="dash-chart-wrap">
+              <canvas #specialtyChart aria-label="Pie chart of doctors by specialty"></canvas>
+            </div>
+          </article>
+        }
 
-      <article class="dash-panel">
-        <div class="dash-panel-head">
-          <h2>Enquiry status</h2>
-          <p>New, contacted, and closed messages</p>
-        </div>
-        <div class="dash-chart-wrap">
-          <canvas #enquiryChart aria-label="Pie chart of enquiry statuses"></canvas>
-        </div>
-      </article>
-    </section>
+        @if (hasEnquiryChart()) {
+          <article class="dash-panel">
+            <div class="dash-panel-head">
+              <h2>Enquiry status</h2>
+              <p>New, contacted, and closed messages</p>
+            </div>
+            <div class="dash-chart-wrap">
+              <canvas #enquiryChart aria-label="Pie chart of enquiry statuses"></canvas>
+            </div>
+          </article>
+        }
+      </section>
+    }
 
     <section class="dash-lower">
       <article class="dash-panel">

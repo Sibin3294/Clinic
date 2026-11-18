@@ -107,6 +107,10 @@
 
 .dash-charts {
   grid-template-columns: 1fr 1fr;
+
+  &:has(> :only-child) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .dash-lower {
