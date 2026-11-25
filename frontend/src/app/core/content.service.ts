@@ -5,7 +5,7 @@ import { API_BASE } from './api.config';
 import { Banner, ClinicProfile, ClinicService, Doctor, Enquiry, EnquiryDraft } from './clinic.models';
 
 const emptyClinic: ClinicProfile = {
-  name: 'My Clinic',
+  name: 'Mitra Clinic',
   city: '',
   tagline: '',
   lede: '',

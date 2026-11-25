@@ -5,27 +5,27 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
-    title: 'My Clinic',
+    title: 'Mitra Clinic',
   },
   {
     path: 'doctors',
     loadComponent: () => import('./pages/doctors/doctors').then((m) => m.Doctors),
-    title: 'Doctors · My Clinic',
+    title: 'Doctors · Mitra Clinic',
   },
   {
     path: 'services',
     loadComponent: () => import('./pages/services/services').then((m) => m.ServicesPage),
-    title: 'Services · My Clinic',
+    title: 'Services · Mitra Clinic',
   },
   {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
-    title: 'Enquiry · My Clinic',
+    title: 'Enquiry · Mitra Clinic',
   },
   {
     path: 'admin/login',
     loadComponent: () => import('./pages/admin/login/login').then((m) => m.AdminLogin),
-    title: 'Admin login · My Clinic',
+    title: 'Admin login · Mitra Clinic',
   },
   {
     path: 'admin',
@@ -35,7 +35,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./pages/admin/dashboard/dashboard').then((m) => m.AdminDashboard),
-        title: 'Admin · My Clinic',
+        title: 'Admin · Mitra Clinic',
       },
       {
         path: 'banners',

@@ -31,22 +31,23 @@ async function ensureAdmin() {
 async function ensureClinicBrand() {
   const updated = await ClinicProfile.findOneAndUpdate(
     { key: 'default' },
-    {
-      $set: {
-        name: clinicProfile.name,
-        email: clinicProfile.email,
-      },
-    },
-    { new: true },
+    { $set: { ...clinicProfile } },
+    { upsert: true, new: true },
   );
-  if (updated) {
-    console.log(`Clinic brand: ${updated.name}`);
+  console.log(`Clinic brand: ${updated.name}`);
+}
+
+async function ensureServices() {
+  const slugs = services.map((item) => item.slug);
+  for (const service of services) {
+    await Service.findOneAndUpdate({ slug: service.slug }, { $set: service }, { upsert: true });
   }
+  await Service.deleteMany({ slug: { $nin: slugs } });
+  console.log(`Services synced (${services.length})`);
 }
 
 async function seedContent({ force = false } = {}) {
-  const profileCount = await ClinicProfile.countDocuments();
-  if (force || profileCount === 0) {
+  if (force) {
     await ClinicProfile.deleteMany({});
     await ClinicProfile.create(clinicProfile);
     console.log('Clinic profile seeded');
@@ -68,11 +69,12 @@ async function seedContent({ force = false } = {}) {
     console.log(`Doctors seeded (${doctors.length})`);
   }
 
-  const serviceCount = await Service.countDocuments();
-  if (force || serviceCount === 0) {
+  if (force) {
     await Service.deleteMany({});
     await Service.insertMany(services);
     console.log(`Services seeded (${services.length})`);
+  } else {
+    await ensureServices();
   }
 }
 

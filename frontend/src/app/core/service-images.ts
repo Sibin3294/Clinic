@@ -11,16 +11,25 @@ const FILES: Record<string, string> = {
 };
 
 const SERVICE_IMAGES: Record<string, string> = {
+  'general-doctors': FILES['m1.svg'],
+  'speciality-consultation': FILES['m2.svg'],
+  laboratory: FILES['m8.svg'],
+  pharmacy: FILES['m7.svg'],
+  ecg: FILES['m2.svg'],
+  'procedure-room': FILES['m4.svg'],
+  observation: FILES['m3.svg'],
+  'home-care': FILES['m6.svg'],
+  // Legacy slugs kept so old bookmarks still resolve an icon.
   'internal-medicine': FILES['m1.svg'],
-  'cardiology': FILES['m2.svg'],
-  'paediatrics': FILES['m3.svg'],
-  'pediatrics': FILES['m3.svg'],
-  'orthopaedics': FILES['m4.svg'],
-  'orthopedics': FILES['m4.svg'],
-  'dermatology': FILES['m5.svg'],
+  cardiology: FILES['m2.svg'],
+  paediatrics: FILES['m3.svg'],
+  pediatrics: FILES['m3.svg'],
+  orthopaedics: FILES['m4.svg'],
+  orthopedics: FILES['m4.svg'],
+  dermatology: FILES['m5.svg'],
   'womens-health': FILES['m6.svg'],
   'preventive-health': FILES['m7.svg'],
-  'diagnostics': FILES['m8.svg'],
+  diagnostics: FILES['m8.svg'],
 };
 
 const FALLBACK = '/banners/clinic-consulting.jpg';
