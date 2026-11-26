@@ -3,10 +3,13 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter } from 'rxjs/operators';
 import { AuthService } from './core/auth.service';
 import { ContentService } from './core/content.service';
+import { LanguageService } from './core/language.service';
+import { TPipe } from './core/t.pipe';
+import { ContactIcon } from './shared/contact-icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TPipe, ContactIcon],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -15,6 +18,7 @@ export class App {
   private readonly router = inject(Router);
   private readonly content = inject(ContentService);
   private readonly auth = inject(AuthService);
+  private readonly language = inject(LanguageService);
   private frame = 0;
 
   readonly clinic = this.content.clinic;
@@ -70,5 +74,9 @@ export class App {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  toggleLanguage(): void {
+    this.language.toggle();
   }
 }

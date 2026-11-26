@@ -1,16 +1,24 @@
 <header class="page-hero wrap">
-  <p class="kicker">Consultants</p>
-  <h1>The doctors at Mitra Clinic.</h1>
-  <p class="lede">
-    Six consultants share one front desk. Choose a specialty, or send an enquiry and we will suggest
-    who should see you first.
-  </p>
+  <p class="kicker">{{ 'doctors.kicker' | t }}</p>
+  <h1>{{ 'doctors.title' | t }}</h1>
 </header>
+
+<section class="section wrap specialty-intro" aria-label="Speciality departments">
+  <div class="specialty-copy">
+    <p>{{ 'doctors.p1' | t }}</p>
+    <p>{{ 'doctors.p2' | t }}</p>
+    <p>{{ 'doctors.p3' | t }}</p>
+  </div>
+</section>
+
+<section class="section wrap doctors-list-head">
+  <h2>{{ 'doctors.listTitle' | t }}</h2>
+</section>
 
 <div class="wrap filters" role="group" aria-label="Filter by specialty">
   @for (item of filters(); track item) {
     <button type="button" [class.is-active]="specialty() === item" [attr.aria-pressed]="specialty() === item" (click)="select(item)">
-      {{ item }}
+      {{ item === 'All' ? ('doctors.all' | t) : item }}
     </button>
   }
 </div>
@@ -22,7 +30,7 @@
   aria-label="Doctors"
 >
   @if (visible().length === 0) {
-    <p class="doctor-carousel-empty">No consultants match this specialty yet.</p>
+    <p class="doctor-carousel-empty">{{ 'doctors.empty' | t }}</p>
   } @else {
     <div class="doctor-carousel-shell">
       <button
@@ -54,16 +62,42 @@
               </div>
               <p class="doctor-specialty">{{ doctor.specialty }}</p>
               <h2>{{ doctor.name }}</h2>
-              <p class="doctor-credentials">{{ doctor.credentials }} · {{ doctor.years }} years in practice</p>
+              <p class="doctor-credentials">
+                {{ doctor.credentials }}
+                @if (doctor.years > 0) {
+                  · {{ doctor.years }} {{ 'doctors.years' | t }}
+                }
+              </p>
               <p>{{ doctor.bio }}</p>
               <ul class="tags">
                 @for (item of doctor.focus; track item) {
                   <li>{{ item }}</li>
                 }
               </ul>
-              <p class="doctor-days">Consults {{ doctor.days }}</p>
+              <dl class="doctor-meta">
+                <div>
+                  <dt>{{ 'doctors.daysLabel' | t }}</dt>
+                  <dd>{{ doctor.days }}</dd>
+                </div>
+                @if (doctor.hours) {
+                  <div>
+                    <dt>{{ 'doctors.hoursLabel' | t }}</dt>
+                    <dd>{{ doctor.hours }}</dd>
+                  </div>
+                }
+                @if (doctor.appointmentPhone) {
+                  <div>
+                    <dt>{{ 'doctors.phoneLabel' | t }}</dt>
+                    <dd>
+                      <a [href]="doctor.appointmentPhoneHref || ('tel:' + doctor.appointmentPhone)">
+                        {{ doctor.appointmentPhone }}
+                      </a>
+                    </dd>
+                  </div>
+                }
+              </dl>
               <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ doctor: doctor.id }">
-                Request this consultant
+                {{ 'doctors.request' | t }}
               </a>
             </article>
           }

@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
 import { serviceImage } from '../../core/service-images';
+import { TPipe } from '../../core/t.pipe';
 
 @Component({
   selector: 'app-services',
-  imports: [RouterLink],
+  imports: [RouterLink, TPipe],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })

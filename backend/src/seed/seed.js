@@ -46,6 +46,15 @@ async function ensureServices() {
   console.log(`Services synced (${services.length})`);
 }
 
+async function ensureDoctors() {
+  const slugs = doctors.map((item) => item.slug);
+  for (const doctor of doctors) {
+    await Doctor.findOneAndUpdate({ slug: doctor.slug }, { $set: doctor }, { upsert: true });
+  }
+  await Doctor.deleteMany({ slug: { $nin: slugs } });
+  console.log(`Doctors synced (${doctors.length})`);
+}
+
 async function seedContent({ force = false } = {}) {
   if (force) {
     await ClinicProfile.deleteMany({});
@@ -62,11 +71,12 @@ async function seedContent({ force = false } = {}) {
     console.log(`Banners seeded (${banners.length})`);
   }
 
-  const doctorCount = await Doctor.countDocuments();
-  if (force || doctorCount === 0) {
+  if (force) {
     await Doctor.deleteMany({});
     await Doctor.insertMany(doctors);
     console.log(`Doctors seeded (${doctors.length})`);
+  } else {
+    await ensureDoctors();
   }
 
   if (force) {

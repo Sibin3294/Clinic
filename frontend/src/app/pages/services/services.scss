@@ -3,10 +3,18 @@
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 0;
   overflow: hidden;
-  background: var(--paper-strong);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  box-shadow: 0 10px 28px rgba(18, 53, 47, 0.03);
+  background: var(--surface-1, var(--paper-strong));
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  border-radius: var(--radius, 24px);
+  box-shadow: var(--shadow-sm, 0 10px 28px rgba(18, 53, 47, 0.03));
+  transition:
+    transform 0.28s var(--ease-out, ease),
+    box-shadow 0.28s var(--ease-out, ease);
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow, 0 12px 32px rgba(18, 53, 47, 0.08));
 }
 
 .service-card-media {

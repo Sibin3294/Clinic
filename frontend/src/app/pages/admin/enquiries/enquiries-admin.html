@@ -4,9 +4,6 @@
     <p class="lede">Messages submitted from the public contact form.</p>
   </header>
 
-  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
-  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
-
   <div class="admin-table-wrap">
     <table class="admin-table">
       <thead>

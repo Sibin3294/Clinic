@@ -1,18 +1,25 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { API_BASE } from './api.config';
 import { Banner, ClinicProfile, ClinicService, Doctor, Enquiry, EnquiryDraft } from './clinic.models';
+import { localizeBanners, localizeClinic, localizeDoctors, localizeServices } from './i18n/localize';
+import { LanguageService } from './language.service';
 
 const emptyClinic: ClinicProfile = {
-  name: 'Mitra Clinic',
+  name: 'മിത്ര ക്ലിനിക്',
   city: '',
   tagline: '',
   lede: '',
   announcement: '',
   phoneDisplay: '',
   phoneHref: '',
+  whatsappDisplay: '',
+  whatsappHref: '',
   email: '',
+  mapUrl: '',
+  facebookUrl: '',
+  instagramUrl: '',
   addressLines: [],
   hours: [],
   notes: [],
@@ -22,26 +29,32 @@ const emptyClinic: ClinicProfile = {
 @Injectable({ providedIn: 'root' })
 export class ContentService {
   private readonly http = inject(HttpClient);
+  private readonly language = inject(LanguageService);
 
-  readonly clinic = signal<ClinicProfile>(emptyClinic);
-  readonly banners = signal<Banner[]>([]);
-  readonly doctors = signal<Doctor[]>([]);
-  readonly services = signal<ClinicService[]>([]);
+  private readonly clinicRaw = signal<ClinicProfile>(emptyClinic);
+  private readonly bannersRaw = signal<Banner[]>([]);
+  private readonly doctorsRaw = signal<Doctor[]>([]);
+  private readonly servicesRaw = signal<ClinicService[]>([]);
+
+  readonly clinic = computed(() => localizeClinic(this.clinicRaw(), this.language.lang()));
+  readonly banners = computed(() => localizeBanners(this.bannersRaw(), this.language.lang()));
+  readonly doctors = computed(() => localizeDoctors(this.doctorsRaw(), this.language.lang()));
+  readonly services = computed(() => localizeServices(this.servicesRaw(), this.language.lang()));
   readonly loaded = signal(false);
 
   loadPublicContent(): void {
     this.http.get<ClinicProfile>(`${API_BASE}/clinic`).subscribe({
-      next: (clinic) => this.clinic.set(clinic),
+      next: (clinic) => this.clinicRaw.set(clinic),
     });
     this.http.get<Banner[]>(`${API_BASE}/banners`).subscribe({
-      next: (banners) => this.banners.set(banners),
+      next: (banners) => this.bannersRaw.set(banners),
     });
     this.http.get<Doctor[]>(`${API_BASE}/doctors`).subscribe({
-      next: (doctors) => this.doctors.set(doctors),
+      next: (doctors) => this.doctorsRaw.set(doctors),
     });
     this.http.get<ClinicService[]>(`${API_BASE}/services`).subscribe({
       next: (services) => {
-        this.services.set(services);
+        this.servicesRaw.set(services);
         this.loaded.set(true);
       },
     });
@@ -51,7 +64,6 @@ export class ContentService {
     return this.http.post<Enquiry>(`${API_BASE}/enquiries`, draft);
   }
 
-  // Admin APIs
   listBannersAdmin() {
     return this.http.get<Banner[]>(`${API_BASE}/banners/all`);
   }
@@ -108,7 +120,7 @@ export class ContentService {
 
   updateClinic(body: Partial<ClinicProfile>) {
     return this.http.put<ClinicProfile>(`${API_BASE}/clinic`, body).pipe(
-      tap((clinic) => this.clinic.set(clinic)),
+      tap((clinic) => this.clinicRaw.set(clinic)),
     );
   }
 

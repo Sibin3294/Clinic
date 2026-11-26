@@ -4,21 +4,30 @@
     <p class="lede">Name, hours, contact details, and departments used across the site.</p>
   </header>
 
-  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
-  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
-
   <form class="admin-form" [formGroup]="form" (ngSubmit)="save()">
     <h2>Profile details</h2>
     <div class="grid">
       <label>Name <input formControlName="name" /></label>
       <label>City <input formControlName="city" /></label>
       <label>Tagline <input formControlName="tagline" /></label>
-      <label>Phone display <input formControlName="phoneDisplay" /></label>
-      <label>Phone href <input formControlName="phoneHref" /></label>
-      <label>Email <input formControlName="email" /></label>
     </div>
     <label>Announcement <input formControlName="announcement" /></label>
     <label>Lede <textarea formControlName="lede"></textarea></label>
+
+    <h2>Contact &amp; social</h2>
+    <p class="lede">Shown on the contact page and footer. Use placeholder values until real details are confirmed.</p>
+    <div class="grid">
+      <label>Phone display <input formControlName="phoneDisplay" placeholder="+91 98765 43210" /></label>
+      <label>Phone link <input formControlName="phoneHref" placeholder="tel:+919876543210" /></label>
+      <label>WhatsApp display <input formControlName="whatsappDisplay" placeholder="+91 98765 43210" /></label>
+      <label>WhatsApp link <input formControlName="whatsappHref" placeholder="https://wa.me/919876543210" /></label>
+      <label>Email <input formControlName="email" placeholder="hello@mitraclinic.example" /></label>
+      <label>Google Maps URL <input formControlName="mapUrl" placeholder="https://maps.google.com/?q=..." /></label>
+      <label>Facebook URL <input formControlName="facebookUrl" placeholder="https://www.facebook.com/..." /></label>
+      <label>Instagram URL <input formControlName="instagramUrl" placeholder="https://www.instagram.com/..." /></label>
+    </div>
+
+    <h2>Location &amp; hours</h2>
     <label>Address lines (one per line) <textarea formControlName="addressLines"></textarea></label>
     <label>Hours (one per line as Days|Time) <textarea formControlName="hours"></textarea></label>
     <label>Notes (one per line) <textarea formControlName="notes"></textarea></label>

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Doctor } from '../../../core/clinic.models';
-import { confirmDelete } from '../../../core/confirm-dialog';
+import { confirmDelete, notifyError, notifySuccess } from '../../../core/confirm-dialog';
 import { ContentService } from '../../../core/content.service';
 import { DOCTOR_PLACEHOLDER } from '../../../core/doctor-placeholder';
 import { MediaUrlPipe } from '../../../core/media-url.pipe';
@@ -20,8 +20,6 @@ export class DoctorsAdmin {
   readonly items = signal<Doctor[]>([]);
   readonly formOpen = signal(false);
   readonly editingId = signal<string | null>(null);
-  readonly message = signal('');
-  readonly error = signal('');
   readonly formError = signal('');
   readonly uploading = signal(false);
   readonly tones = ['pine', 'copper', 'gold', 'clay', 'ink', 'sage'] as const;
@@ -33,6 +31,9 @@ export class DoctorsAdmin {
     years: [0, Validators.required],
     bio: ['', Validators.required],
     days: ['', Validators.required],
+    hours: [''],
+    appointmentPhone: [''],
+    appointmentPhoneHref: [''],
     focus: [''],
     initials: ['', Validators.required],
     tone: ['pine' as Doctor['tone'], Validators.required],
@@ -48,7 +49,7 @@ export class DoctorsAdmin {
   reload(): void {
     this.content.listDoctorsAdmin().subscribe({
       next: (items) => this.items.set(items),
-      error: () => this.error.set('Could not load doctors'),
+      error: () => notifyError('Could not load doctors'),
     });
   }
 
@@ -62,6 +63,9 @@ export class DoctorsAdmin {
       years: 0,
       bio: '',
       days: '',
+      hours: '',
+      appointmentPhone: '',
+      appointmentPhoneHref: '',
       focus: '',
       initials: '',
       tone: 'pine',
@@ -82,6 +86,9 @@ export class DoctorsAdmin {
       years: item.years,
       bio: item.bio,
       days: item.days,
+      hours: item.hours || '',
+      appointmentPhone: item.appointmentPhone || '',
+      appointmentPhoneHref: item.appointmentPhoneHref || '',
       focus: item.focus.join(', '),
       initials: item.initials,
       tone: item.tone,
@@ -112,10 +119,13 @@ export class DoctorsAdmin {
         this.form.patchValue({ photo: res.url });
         this.uploading.set(false);
         input.value = '';
+        notifySuccess('Photo uploaded');
       },
       error: (err) => {
         this.uploading.set(false);
-        this.formError.set(err?.error?.message || 'Upload failed');
+        const msg = err?.error?.message || 'Upload failed';
+        this.formError.set(msg);
+        notifyError(msg);
         input.value = '';
       },
     });
@@ -128,11 +138,19 @@ export class DoctorsAdmin {
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      notifyError('Please fill in the required fields');
       return;
     }
     const raw = this.form.getRawValue();
+    const phone = raw.appointmentPhone.trim();
+    const phoneHref =
+      raw.appointmentPhoneHref.trim() ||
+      (phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : '');
     const body = {
       ...raw,
+      hours: raw.hours.trim(),
+      appointmentPhone: phone,
+      appointmentPhoneHref: phoneHref,
       focus: raw.focus
         .split(',')
         .map((part) => part.trim())
@@ -142,12 +160,15 @@ export class DoctorsAdmin {
     const req = id ? this.content.updateDoctor(id, body) : this.content.createDoctor(body);
     req.subscribe({
       next: () => {
-        this.message.set(id ? 'Doctor updated' : 'Doctor created');
-        this.error.set('');
+        notifySuccess(id ? 'Doctor updated' : 'Doctor created');
         this.closeForm();
         this.reload();
       },
-      error: (err) => this.formError.set(err?.error?.message || 'Save failed'),
+      error: (err) => {
+        const msg = err?.error?.message || 'Save failed';
+        this.formError.set(msg);
+        notifyError(msg);
+      },
     });
   }
 
@@ -156,10 +177,10 @@ export class DoctorsAdmin {
     if (!ok) return;
     this.content.deleteDoctor(item._id || item.id).subscribe({
       next: () => {
-        this.message.set('Doctor deleted');
+        notifySuccess('Doctor deleted');
         this.reload();
       },
-      error: () => this.error.set('Delete failed'),
+      error: () => notifyError('Delete failed'),
     });
   }
 }

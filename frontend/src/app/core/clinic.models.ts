@@ -12,7 +12,12 @@ export interface ClinicProfile {
   announcement: string;
   phoneDisplay: string;
   phoneHref: string;
+  whatsappDisplay: string;
+  whatsappHref: string;
   email: string;
+  mapUrl: string;
+  facebookUrl: string;
+  instagramUrl: string;
   addressLines: string[];
   hours: ClinicHour[];
   notes: string[];
@@ -38,6 +43,9 @@ export interface Doctor {
   years: number;
   bio: string;
   days: string;
+  hours?: string;
+  appointmentPhone?: string;
+  appointmentPhoneHref?: string;
   focus: string[];
   initials: string;
   tone: 'pine' | 'copper' | 'gold' | 'clay' | 'ink' | 'sage';

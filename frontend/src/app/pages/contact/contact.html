@@ -1,10 +1,7 @@
 <header class="page-hero wrap">
-  <p class="kicker">Enquiry desk</p>
-  <h1>Tell us how we can help.</h1>
-  <p class="lede">
-    Share a preferred day and a short note. The front desk calls during clinic hours to confirm the
-    consultant and the time.
-  </p>
+  <p class="kicker">{{ 'contact.kicker' | t }}</p>
+  <h1>{{ 'contact.title' | t }}</h1>
+  <p class="lede">{{ 'contact.lede' | t }}</p>
 </header>
 
 <section class="section wrap contact-grid">
@@ -133,9 +130,64 @@
   }
 
   <aside class="detail-card">
-    <p class="panel-label">Front desk</p>
-    <a class="panel-phone" [href]="clinic().phoneHref">{{ clinic().phoneDisplay }}</a>
-    <a class="detail-email" [href]="'mailto:' + clinic().email">{{ clinic().email }}</a>
+    <p class="panel-label">{{ 'contact.frontDesk' | t }}</p>
+
+    <a class="contact-channel contact-channel-phone" [href]="clinic().phoneHref">
+      <app-contact-icon name="phone" />
+      <span>
+        <span class="contact-channel-kicker">{{ 'contact.phone' | t }}</span>
+        <span class="panel-phone">{{ clinic().phoneDisplay }}</span>
+      </span>
+    </a>
+
+    <div class="contact-channels">
+      @if (clinic().whatsappHref) {
+        <a class="contact-channel" [href]="clinic().whatsappHref" target="_blank" rel="noopener noreferrer">
+          <app-contact-icon name="whatsapp" tone="soft" />
+          <span>
+            <span class="contact-channel-kicker">{{ 'contact.whatsapp' | t }}</span>
+            <span class="contact-channel-value">{{ clinic().whatsappDisplay || clinic().whatsappHref }}</span>
+          </span>
+        </a>
+      }
+      <a class="contact-channel" [href]="'mailto:' + clinic().email">
+        <app-contact-icon name="email" tone="soft" />
+        <span>
+          <span class="contact-channel-kicker">{{ 'contact.emailLabel' | t }}</span>
+          <span class="contact-channel-value detail-email">{{ clinic().email }}</span>
+        </span>
+      </a>
+      @if (clinic().mapUrl) {
+        <a class="contact-channel" [href]="clinic().mapUrl" target="_blank" rel="noopener noreferrer">
+          <app-contact-icon name="map" tone="soft" />
+          <span>
+            <span class="contact-channel-kicker">{{ 'contact.map' | t }}</span>
+            <span class="contact-channel-value">{{ 'contact.openMap' | t }}</span>
+          </span>
+        </a>
+      }
+    </div>
+
+    @if (clinic().facebookUrl || clinic().instagramUrl) {
+      <div class="contact-social">
+        <p class="contact-social-label">{{ 'contact.social' | t }}</p>
+        <div class="contact-social-links">
+          @if (clinic().facebookUrl) {
+            <a class="contact-social-link" [href]="clinic().facebookUrl" target="_blank" rel="noopener noreferrer">
+              <app-contact-icon name="facebook" tone="soft" />
+              <span>{{ 'contact.facebook' | t }}</span>
+            </a>
+          }
+          @if (clinic().instagramUrl) {
+            <a class="contact-social-link" [href]="clinic().instagramUrl" target="_blank" rel="noopener noreferrer">
+              <app-contact-icon name="instagram" tone="soft" />
+              <span>{{ 'contact.instagram' | t }}</span>
+            </a>
+          }
+        </div>
+      </div>
+    }
+
     <address>
       @for (line of clinic().addressLines; track line) {
         <span>{{ line }}</span>

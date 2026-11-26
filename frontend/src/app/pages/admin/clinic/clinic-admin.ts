@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { API_BASE } from '../../../core/api.config';
 import { ClinicProfile } from '../../../core/clinic.models';
+import { notifyError, notifySuccess } from '../../../core/confirm-dialog';
 import { ContentService } from '../../../core/content.service';
 
 @Component({
@@ -16,9 +17,6 @@ export class ClinicAdmin {
   private readonly http = inject(HttpClient);
   private readonly fb = inject(FormBuilder);
 
-  readonly message = signal('');
-  readonly error = signal('');
-
   readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     city: ['', Validators.required],
@@ -27,7 +25,12 @@ export class ClinicAdmin {
     announcement: ['', Validators.required],
     phoneDisplay: ['', Validators.required],
     phoneHref: ['', Validators.required],
+    whatsappDisplay: [''],
+    whatsappHref: [''],
     email: ['', [Validators.required, Validators.email]],
+    mapUrl: [''],
+    facebookUrl: [''],
+    instagramUrl: [''],
     addressLines: [''],
     hours: [''],
     notes: [''],
@@ -37,13 +40,14 @@ export class ClinicAdmin {
   constructor() {
     this.http.get<ClinicProfile>(`${API_BASE}/clinic`).subscribe({
       next: (clinic) => this.patch(clinic),
-      error: () => this.error.set('Could not load clinic profile'),
+      error: () => notifyError('Could not load clinic profile'),
     });
   }
 
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      notifyError('Please fill in the required fields');
       return;
     }
     const raw = this.form.getRawValue();
@@ -55,7 +59,12 @@ export class ClinicAdmin {
       announcement: raw.announcement,
       phoneDisplay: raw.phoneDisplay,
       phoneHref: raw.phoneHref,
+      whatsappDisplay: raw.whatsappDisplay.trim(),
+      whatsappHref: raw.whatsappHref.trim(),
       email: raw.email,
+      mapUrl: raw.mapUrl.trim(),
+      facebookUrl: raw.facebookUrl.trim(),
+      instagramUrl: raw.instagramUrl.trim(),
       addressLines: splitLines(raw.addressLines),
       notes: splitLines(raw.notes),
       departments: splitLines(raw.departments),
@@ -66,11 +75,8 @@ export class ClinicAdmin {
     };
 
     this.content.updateClinic(body).subscribe({
-      next: () => {
-        this.message.set('Clinic profile saved');
-        this.error.set('');
-      },
-      error: (err) => this.error.set(err?.error?.message || 'Save failed'),
+      next: () => notifySuccess('Clinic profile saved'),
+      error: (err) => notifyError(err?.error?.message || 'Save failed'),
     });
   }
 
@@ -83,7 +89,12 @@ export class ClinicAdmin {
       announcement: clinic.announcement,
       phoneDisplay: clinic.phoneDisplay,
       phoneHref: clinic.phoneHref,
+      whatsappDisplay: clinic.whatsappDisplay || '',
+      whatsappHref: clinic.whatsappHref || '',
       email: clinic.email,
+      mapUrl: clinic.mapUrl || '',
+      facebookUrl: clinic.facebookUrl || '',
+      instagramUrl: clinic.instagramUrl || '',
       addressLines: (clinic.addressLines || []).join('\n'),
       notes: (clinic.notes || []).join('\n'),
       departments: (clinic.departments || []).join('\n'),

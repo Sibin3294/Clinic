@@ -1,0 +1,67 @@
+<header class="page-hero wrap">
+  <p class="kicker">{{ 'about.kicker' | t }}</p>
+  <h1>{{ 'about.title' | t }}</h1>
+  <p class="lede">{{ 'about.lede' | t }}</p>
+</header>
+
+<section class="section wrap about-block" appReveal>
+  <p>{{ 'about.p1' | t }}</p>
+  <p>{{ 'about.p2' | t }}</p>
+  <p>
+    {{ 'about.p3a' | t }}
+    <a routerLink="/sadaram">{{ 'nav.sadaram' | t }}</a>
+    {{ 'about.p3b' | t }}
+  </p>
+</section>
+
+<section class="section wrap about-grid">
+  <article class="about-card" appReveal>
+    <p class="kicker">{{ 'about.missionKicker' | t }}</p>
+    <h2>{{ 'about.missionTitle' | t }}</h2>
+    <p>{{ 'about.missionText' | t }}</p>
+  </article>
+  <article class="about-card" appReveal [appRevealDelay]="80">
+    <p class="kicker">{{ 'about.visionKicker' | t }}</p>
+    <h2>{{ 'about.visionTitle' | t }}</h2>
+    <p>{{ 'about.visionText' | t }}</p>
+  </article>
+</section>
+
+<section class="section wrap">
+  <div class="about-head" appReveal>
+    <p class="kicker">{{ 'about.valuesKicker' | t }}</p>
+    <h2>{{ 'about.valuesTitle' | t }}</h2>
+  </div>
+  <ul class="value-list">
+    @for (item of values(); track item; let i = $index) {
+      <li appReveal [appRevealDelay]="i * 40">{{ item }}</li>
+    }
+  </ul>
+</section>
+
+<section class="section wrap">
+  <div class="about-head" appReveal>
+    <p class="kicker">{{ 'about.whyKicker' | t }}</p>
+    <h2>{{ 'about.whyTitle' | t }}</h2>
+    <p class="lede">{{ 'about.whyP1' | t }}</p>
+    <p class="lede">{{ 'about.whyP2' | t }}</p>
+  </div>
+  <div class="why-grid">
+    @for (item of whyMitra(); track item.title; let i = $index) {
+      <article class="why-card" appReveal [appRevealDelay]="i * 35">
+        <app-why-icon [name]="item.icon" />
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="cta-band" appReveal>
+  <div class="wrap cta-inner">
+    <p class="kicker kicker-light">{{ 'about.ctaKicker' | t }}</p>
+    <h2>{{ 'about.ctaTitle' | t }}</h2>
+    <p class="lede lede-light">{{ 'about.ctaLede' | t }}</p>
+    <a class="btn btn-light" routerLink="/contact">{{ 'about.ctaBtn' | t }}</a>
+  </div>
+</section>

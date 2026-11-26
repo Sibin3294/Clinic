@@ -302,6 +302,12 @@
   background: rgba(238, 244, 240, 0.45);
 }
 
+.admin-table .meta {
+  margin-top: 0.2rem;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
 .admin-table tbody tr:last-child td {
   border-bottom: 0;
 }

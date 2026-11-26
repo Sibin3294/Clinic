@@ -1,0 +1,49 @@
+.sadaram-lead,
+.sadaram-close {
+  max-width: 46rem;
+  display: grid;
+  gap: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.sadaram-quote {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.sadaram-benefit {
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--pine) 6%, var(--surface-1, #fffcf7)), var(--surface-1, #fffcf7));
+  border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+  border-radius: var(--radius, 24px);
+  padding: 1.5rem 1.6rem;
+  max-width: 40rem;
+  box-shadow: var(--shadow-sm, none);
+}
+
+.sadaram-benefit h2 {
+  margin: 0.35rem 0 0.75rem;
+  font-family: var(--serif);
+}
+
+.sadaram-benefit p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.sadaram-end {
+  font-family: var(--serif);
+  color: var(--ink) !important;
+  font-size: 1.25rem;
+}
+
+.sadaram-close .btn {
+  justify-self: start;
+  margin-top: 0.35rem;
+}

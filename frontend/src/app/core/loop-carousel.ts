@@ -63,10 +63,13 @@ export function createLoopCarousel({
     if (event.pointerType === 'mouse' && event.button !== 0) {
       return;
     }
+    // Don't capture / swipe-track when the user is clicking a control.
+    const hit = event.target as HTMLElement | null;
+    if (hit?.closest?.('button, a, input, select, textarea, label, [role="tab"], [role="button"]')) {
+      return;
+    }
     pointerActive = true;
     pointerX = event.clientX;
-    const target = event.currentTarget as HTMLElement | null;
-    target?.setPointerCapture?.(event.pointerId);
     stop();
   };
 

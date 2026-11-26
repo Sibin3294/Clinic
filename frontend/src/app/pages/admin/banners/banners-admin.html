@@ -4,9 +4,6 @@
     <p class="lede">Upload an image for the home slideshow, or keep an existing path/URL.</p>
   </header>
 
-  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
-  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
-
   <div class="admin-toolbar">
     <button type="button" class="btn-add" (click)="startCreate()">Add banner</button>
   </div>

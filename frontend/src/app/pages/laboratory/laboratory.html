@@ -1,0 +1,33 @@
+<header class="page-hero wrap">
+  <p class="kicker">{{ 'lab.kicker' | t }}</p>
+  <h1>{{ 'lab.title' | t }}</h1>
+  <p class="lede">{{ 'lab.subtitle' | t }}</p>
+</header>
+
+<section class="section wrap lab-lead" appReveal>
+  <p>{{ 'lab.p1' | t }}</p>
+  <p>{{ 'lab.p2' | t }}</p>
+  <p>{{ 'lab.p3' | t }}</p>
+</section>
+
+<section class="section wrap" appReveal>
+  <article class="lab-highlights">
+    <p class="kicker">{{ 'lab.featuresKicker' | t }}</p>
+    <h2>{{ 'lab.featuresTitle' | t }}</h2>
+    <ul>
+      @for (item of highlights; track item) {
+        <li>{{ item | t }}</li>
+      }
+    </ul>
+  </article>
+</section>
+
+<section class="section wrap lab-close" appReveal>
+  <p class="lab-hours">{{ 'lab.hoursNote' | t }}</p>
+  <div class="lab-actions">
+    <a class="btn btn-dark" routerLink="/contact" [queryParams]="{ department: 'ലബോറട്ടറി' }">
+      {{ 'lab.enquire' | t }}
+    </a>
+    <a class="btn btn-light" routerLink="/services">{{ 'lab.allServices' | t }}</a>
+  </div>
+</section>

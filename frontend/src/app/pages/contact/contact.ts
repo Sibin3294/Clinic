@@ -2,12 +2,14 @@ import { Component, computed, effect, inject, input, signal } from '@angular/cor
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ContentService } from '../../core/content.service';
 import { EnquiryService } from '../../core/enquiry.service';
+import { TPipe } from '../../core/t.pipe';
+import { ContactIcon } from '../../shared/contact-icon';
 
 type Field = 'name' | 'phone' | 'email' | 'department' | 'preferredDate' | 'message' | 'consent';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TPipe, ContactIcon],
   templateUrl: './contact.html',
 })
 export class Contact {

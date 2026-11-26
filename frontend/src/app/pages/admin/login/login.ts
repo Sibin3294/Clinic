@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { notifyError, notifySuccess } from '../../../core/confirm-dialog';
 
 @Component({
   selector: 'app-admin-login',
@@ -14,7 +15,6 @@ export class AdminLogin {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly error = signal('');
   readonly loading = signal(false);
   readonly showPassword = signal(false);
 
@@ -32,19 +32,20 @@ export class AdminLogin {
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      notifyError('Enter a valid email and password');
       return;
     }
     this.loading.set(true);
-    this.error.set('');
     const { email, password } = this.form.getRawValue();
     this.auth.login(email, password).subscribe({
       next: () => {
         this.loading.set(false);
+        notifySuccess('Welcome back');
         void this.router.navigateByUrl('/admin');
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err?.error?.message || 'Login failed');
+        notifyError(err?.error?.message || 'Login failed');
       },
     });
   }

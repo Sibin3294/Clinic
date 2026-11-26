@@ -4,9 +4,6 @@
     <p class="lede">Add, edit, or remove consultants shown on the public site.</p>
   </header>
 
-  @if (message()) { <p class="admin-msg">{{ message() }}</p> }
-  @if (error()) { <p class="admin-msg error">{{ error() }}</p> }
-
   <div class="admin-toolbar">
     <button type="button" class="btn-add" (click)="startCreate()">Add doctor</button>
   </div>
@@ -18,7 +15,8 @@
           <th>Photo</th>
           <th>Name</th>
           <th>Specialty</th>
-          <th>Days</th>
+          <th>Days / Hours</th>
+          <th>Phone</th>
           <th>Active</th>
           <th>Actions</th>
         </tr>
@@ -36,9 +34,18 @@
                 }
               </span>
             </td>
-            <td>{{ item.name }}</td>
+            <td>
+              <div>{{ item.name }}</div>
+              <div class="meta">{{ item.credentials }}@if (item.years > 0) { · {{ item.years }} yrs}</div>
+            </td>
             <td>{{ item.specialty }}</td>
-            <td>{{ item.days }}</td>
+            <td>
+              <div>{{ item.days }}</div>
+              @if (item.hours) {
+                <div class="meta">{{ item.hours }}</div>
+              }
+            </td>
+            <td>{{ item.appointmentPhone || '—' }}</td>
             <td>
               <span class="admin-badge" [class.is-on]="item.active !== false" [class.is-off]="item.active === false">
                 {{ item.active === false ? 'Hidden' : 'Active' }}
@@ -94,11 +101,14 @@
         </div>
 
         <div class="grid">
-          <label>Name <input formControlName="name" /></label>
+          <label>Name <input formControlName="name" placeholder="Dr. …" /></label>
           <label>Specialty <input formControlName="specialty" /></label>
-          <label>Credentials <input formControlName="credentials" /></label>
-          <label>Years <input type="number" formControlName="years" /></label>
-          <label>Days <input formControlName="days" /></label>
+          <label>Qualifications <input formControlName="credentials" placeholder="MBBS, MD…" /></label>
+          <label>Years of experience <input type="number" formControlName="years" min="0" /></label>
+          <label>Consultation days <input formControlName="days" placeholder="Mon – Sat" /></label>
+          <label>Consultation time <input formControlName="hours" placeholder="8:00 am – 1:00 pm" /></label>
+          <label>Appointment phone <input formControlName="appointmentPhone" placeholder="+91 98765 43210" /></label>
+          <label>Phone link <input formControlName="appointmentPhoneHref" placeholder="tel:+919876543210" /></label>
           <label>Initials <input formControlName="initials" /></label>
           <label>Tone
             <select formControlName="tone">

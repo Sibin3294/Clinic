@@ -12,10 +12,11 @@ import { ContentService } from '../../core/content.service';
 import { DOCTOR_PLACEHOLDER } from '../../core/doctor-placeholder';
 import { createLoopCarousel } from '../../core/loop-carousel';
 import { MediaUrlPipe } from '../../core/media-url.pipe';
+import { TPipe } from '../../core/t.pipe';
 
 @Component({
   selector: 'app-doctors',
-  imports: [RouterLink, MediaUrlPipe],
+  imports: [RouterLink, MediaUrlPipe, TPipe],
   templateUrl: './doctors.html',
   styleUrl: './doctors.scss',
 })

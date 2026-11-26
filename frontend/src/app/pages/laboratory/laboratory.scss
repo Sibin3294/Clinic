@@ -1,0 +1,75 @@
+.lab-lead {
+  max-width: 46rem;
+  display: grid;
+  gap: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  padding-top: 0.35rem;
+}
+
+.lab-lead p {
+  margin: 0;
+}
+
+.lab-highlights {
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--pine) 6%, var(--surface-1, #fffcf7)), var(--surface-1, #fffcf7));
+  border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+  border-radius: var(--radius, 24px);
+  padding: 1.5rem 1.6rem;
+  max-width: 40rem;
+  box-shadow: var(--shadow-sm, none);
+}
+
+.lab-highlights h2 {
+  margin: 0.35rem 0 1rem;
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+}
+
+.lab-highlights ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lab-highlights li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.lab-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--pine);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pine) 16%, transparent);
+}
+
+.lab-close {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 40rem;
+}
+
+.lab-hours {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

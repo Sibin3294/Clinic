@@ -11,21 +11,31 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ContentService } from '../../core/content.service';
+import { ABOUT_WHY_EN, ABOUT_WHY_ML } from '../../core/i18n/content-en';
+import { t } from '../../core/i18n/ui';
+import { LanguageService } from '../../core/language.service';
 import { createLoopCarousel } from '../../core/loop-carousel';
 import { MediaUrlPipe } from '../../core/media-url.pipe';
 import { DOCTOR_PLACEHOLDER } from '../../core/doctor-placeholder';
 import { serviceImage } from '../../core/service-images';
+import { TPipe } from '../../core/t.pipe';
+import { CountUp } from '../../shared/count-up';
 import { ScrollReveal } from '../../shared/scroll-reveal.directive';
+import { WhyIcon } from '../../shared/why-icon';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, ScrollReveal, MediaUrlPipe],
+  imports: [RouterLink, ScrollReveal, MediaUrlPipe, TPipe, WhyIcon, CountUp],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class Home {
   private readonly destroyRef = inject(DestroyRef);
   private readonly content = inject(ContentService);
+  private readonly language = inject(LanguageService);
+  readonly whyMitra = computed(() =>
+    this.language.lang() === 'en' ? ABOUT_WHY_EN : ABOUT_WHY_ML,
+  );
   private timer: ReturnType<typeof setInterval> | undefined;
   private frame = 0;
   private readonly doctorCarousel: ReturnType<typeof createLoopCarousel>;
@@ -51,20 +61,14 @@ export class Home {
   readonly parallax = signal(0);
   readonly serviceImage = serviceImage;
   readonly doctorPlaceholder = DOCTOR_PLACEHOLDER;
-  readonly steps = [
-    {
-      title: 'Tell us what you need',
-      text: 'Send an enquiry with the department, a preferred day, and a short note about the concern.',
-    },
-    {
-      title: 'We confirm by phone',
-      text: 'The front desk calls during clinic hours to place you with the right consultant.',
-    },
-    {
-      title: 'See your consultant',
-      text: 'Arrive ten minutes early with previous reports. You leave with a plan in writing.',
-    },
-  ];
+  readonly steps = computed(() => {
+    const lang = this.language.lang();
+    return [
+      { title: t(lang, 'home.step1.title'), text: t(lang, 'home.step1.text') },
+      { title: t(lang, 'home.step2.title'), text: t(lang, 'home.step2.text') },
+      { title: t(lang, 'home.step3.title'), text: t(lang, 'home.step3.text') },
+    ];
+  });
 
   constructor() {
     this.doctorCarousel = createLoopCarousel({

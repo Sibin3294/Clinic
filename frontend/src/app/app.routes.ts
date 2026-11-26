@@ -5,22 +5,42 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
-    title: 'Mitra Clinic',
+    title: 'മിത്ര ക്ലിനിക്',
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./pages/about/about').then((m) => m.About),
+    title: 'ഞങ്ങളെക്കുറിച്ച് · മിത്ര ക്ലിനിക്',
   },
   {
     path: 'doctors',
     loadComponent: () => import('./pages/doctors/doctors').then((m) => m.Doctors),
-    title: 'Doctors · Mitra Clinic',
+    title: 'ഡോക്ടർമാർ · മിത്ര ക്ലിനിക്',
   },
   {
     path: 'services',
     loadComponent: () => import('./pages/services/services').then((m) => m.ServicesPage),
-    title: 'Services · Mitra Clinic',
+    title: 'സേവനങ്ങൾ · മിത്ര ക്ലിനിക്',
+  },
+  {
+    path: 'laboratory',
+    loadComponent: () => import('./pages/laboratory/laboratory').then((m) => m.Laboratory),
+    title: 'ലബോറട്ടറി · മിത്ര ക്ലിനിക്',
+  },
+  {
+    path: 'sadaram',
+    loadComponent: () => import('./pages/sadaram/sadaram').then((m) => m.Sadaram),
+    title: 'സാദരം · മിത്ര ക്ലിനിക്',
+  },
+  {
+    path: 'gallery',
+    loadComponent: () => import('./pages/gallery/gallery').then((m) => m.Gallery),
+    title: 'ഗാലറി · മിത്ര ക്ലിനിക്',
   },
   {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
-    title: 'Enquiry · Mitra Clinic',
+    title: 'ബന്ധപ്പെടുക · മിത്ര ക്ലിനിക്',
   },
   {
     path: 'admin/login',

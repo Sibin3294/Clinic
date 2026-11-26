@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClinicService } from '../../../core/clinic.models';
-import { confirmDelete } from '../../../core/confirm-dialog';
+import { confirmDelete, notifyError, notifySuccess } from '../../../core/confirm-dialog';
 import { ContentService } from '../../../core/content.service';
 
 @Component({
@@ -17,8 +17,6 @@ export class ServicesAdmin {
   readonly items = signal<ClinicService[]>([]);
   readonly formOpen = signal(false);
   readonly editingId = signal<string | null>(null);
-  readonly message = signal('');
-  readonly error = signal('');
   readonly formError = signal('');
 
   readonly form = this.fb.nonNullable.group({
@@ -39,7 +37,7 @@ export class ServicesAdmin {
   reload(): void {
     this.content.listServicesAdmin().subscribe({
       next: (items) => this.items.set(items),
-      error: () => this.error.set('Could not load services'),
+      error: () => notifyError('Could not load services'),
     });
   }
 
@@ -84,6 +82,7 @@ export class ServicesAdmin {
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      notifyError('Please fill in the required fields');
       return;
     }
     const raw = this.form.getRawValue();
@@ -98,12 +97,15 @@ export class ServicesAdmin {
     const req = id ? this.content.updateService(id, body) : this.content.createService(body);
     req.subscribe({
       next: () => {
-        this.message.set(id ? 'Service updated' : 'Service created');
-        this.error.set('');
+        notifySuccess(id ? 'Service updated' : 'Service created');
         this.closeForm();
         this.reload();
       },
-      error: (err) => this.formError.set(err?.error?.message || 'Save failed'),
+      error: (err) => {
+        const msg = err?.error?.message || 'Save failed';
+        this.formError.set(msg);
+        notifyError(msg);
+      },
     });
   }
 
@@ -112,10 +114,10 @@ export class ServicesAdmin {
     if (!ok) return;
     this.content.deleteService(item._id || item.id).subscribe({
       next: () => {
-        this.message.set('Service deleted');
+        notifySuccess('Service deleted');
         this.reload();
       },
-      error: () => this.error.set('Delete failed'),
+      error: () => notifyError('Delete failed'),
     });
   }
 }

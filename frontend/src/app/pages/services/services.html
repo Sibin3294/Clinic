@@ -1,10 +1,7 @@
 <header class="page-hero wrap">
-  <p class="kicker">Services</p>
-  <h1>Care we provide in the clinic.</h1>
-  <p class="lede">
-    Consultations, health checks, and on-site diagnostics. If you are unsure which door to knock on,
-    say so in the enquiry and the desk will route it.
-  </p>
+  <p class="kicker">{{ 'services.kicker' | t }}</p>
+  <h1>{{ 'services.title' | t }}</h1>
+  <p class="lede">{{ 'services.lede' | t }}</p>
 </header>
 
 <section class="section wrap service-list">
@@ -18,7 +15,7 @@
           <p class="service-card-index">0{{ index + 1 }}</p>
           <h2>{{ service.name }}</h2>
           <p>{{ service.summary }}</p>
-          <p class="suited"><span>Suited for</span> {{ service.suitedFor }}</p>
+          <p class="suited"><span>{{ 'services.suited' | t }}</span> {{ service.suitedFor }}</p>
         </div>
         <div class="service-card-side">
           <p class="info-card-meta">{{ service.duration }}</p>
@@ -27,8 +24,11 @@
               <li>{{ item }}</li>
             }
           </ul>
+          @if ((service.slug || service.id) === 'laboratory') {
+            <a class="text-link" routerLink="/laboratory">{{ 'services.labLink' | t }}</a>
+          }
           <a class="text-link" [routerLink]="['/contact']" [queryParams]="{ department: service.department }">
-            Enquire about {{ service.name }}
+            {{ service.name }} — {{ 'services.enquire' | t }}
           </a>
         </div>
       </div>

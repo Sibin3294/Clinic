@@ -5,7 +5,7 @@
   <div class="announce">
     <div class="wrap announce-inner">
       <p>{{ clinic().announcement }}</p>
-      <a routerLink="/contact" (click)="closeMenu()">Send an enquiry</a>
+      <a routerLink="/contact" (click)="closeMenu()">{{ 'nav.enquiry' | t }}</a>
     </div>
   </div>
 
@@ -13,13 +13,13 @@
     <div class="wrap nav-inner">
       <a class="brand" routerLink="/" (click)="closeMenu()">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 32 32" width="32" height="32">
-            <rect width="32" height="32" rx="9" fill="currentColor" />
-            <path d="M16 8.5v15M10.5 16h11" stroke="#f4efe6" stroke-width="2" stroke-linecap="round" />
+          <svg viewBox="0 0 32 32" width="34" height="34">
+            <rect width="32" height="32" rx="11" fill="currentColor" />
+            <path d="M16 8.5v15M10.5 16h11" stroke="#f7f1e6" stroke-width="2.2" stroke-linecap="round" />
           </svg>
         </span>
         <span class="brand-text">
-          <span class="brand-name">{{ clinic().name || 'Mitra Clinic' }}</span>
+          <span class="brand-name">{{ clinic().name || ('home.kicker' | t) }}</span>
           <span class="brand-meta">{{ clinic().city }}</span>
         </span>
       </a>
@@ -36,11 +36,18 @@
       </button>
 
       <nav id="site-nav" class="nav-panel" [class.is-open]="menuOpen()" aria-label="Primary">
-        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
-        <a routerLink="/doctors" routerLinkActive="is-active" (click)="closeMenu()">Doctors</a>
-        <a routerLink="/services" routerLinkActive="is-active" (click)="closeMenu()">Services</a>
-        <a routerLink="/contact" routerLinkActive="is-active" (click)="closeMenu()">Contact</a>
-        <a class="btn btn-dark nav-cta" routerLink="/contact" (click)="closeMenu()">Book a visit</a>
+        <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">{{ 'nav.home' | t }}</a>
+        <a routerLink="/about" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.about' | t }}</a>
+        <a routerLink="/doctors" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.doctors' | t }}</a>
+        <a routerLink="/services" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.services' | t }}</a>
+        <a routerLink="/laboratory" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.laboratory' | t }}</a>
+        <a routerLink="/sadaram" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.sadaram' | t }}</a>
+        <a routerLink="/gallery" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.gallery' | t }}</a>
+        <a routerLink="/contact" routerLinkActive="is-active" (click)="closeMenu()">{{ 'nav.contact' | t }}</a>
+        <button type="button" class="lang-switch" (click)="toggleLanguage()" [attr.aria-label]="'lang.switchAria' | t">
+          {{ 'lang.switch' | t }}
+        </button>
+        <a class="btn btn-dark nav-cta" routerLink="/contact" (click)="closeMenu()">{{ 'nav.book' | t }}</a>
       </nav>
     </div>
   </header>
@@ -55,20 +62,53 @@
     <div class="wrap footer-grid">
       <div>
         <p class="brand-name footer-name">{{ clinic().name }}</p>
-        <p class="footer-lede">Quality care near {{ clinic().city }} — doctors, lab, pharmacy, and home care under one roof.</p>
+        <p class="footer-lede">{{ 'footer.lede' | t }} {{ clinic().city }}</p>
       </div>
       <div>
-        <p class="footer-label">Visit</p>
+        <p class="footer-label">{{ 'footer.visit' | t }}</p>
         <address>
           @for (line of clinic().addressLines; track line) {
             <span>{{ line }}</span>
           }
         </address>
-        <a [href]="clinic().phoneHref">{{ clinic().phoneDisplay }}</a>
-        <a [href]="'mailto:' + clinic().email">{{ clinic().email }}</a>
+        @if (clinic().mapUrl) {
+          <a class="footer-channel" [href]="clinic().mapUrl" target="_blank" rel="noopener noreferrer">
+            <app-contact-icon name="map" tone="footer" />
+            <span>{{ 'contact.openMap' | t }}</span>
+          </a>
+        }
       </div>
       <div>
-        <p class="footer-label">Hours</p>
+        <p class="footer-label">{{ 'footer.contact' | t }}</p>
+        <a class="footer-channel" [href]="clinic().phoneHref">
+          <app-contact-icon name="phone" tone="footer" />
+          <span>{{ clinic().phoneDisplay }}</span>
+        </a>
+        @if (clinic().whatsappHref) {
+          <a class="footer-channel" [href]="clinic().whatsappHref" target="_blank" rel="noopener noreferrer">
+            <app-contact-icon name="whatsapp" tone="footer" />
+            <span>{{ clinic().whatsappDisplay || clinic().phoneDisplay }}</span>
+          </a>
+        }
+        <a class="footer-channel" [href]="'mailto:' + clinic().email">
+          <app-contact-icon name="email" tone="footer" />
+          <span>{{ clinic().email }}</span>
+        </a>
+        @if (clinic().facebookUrl) {
+          <a class="footer-channel" [href]="clinic().facebookUrl" target="_blank" rel="noopener noreferrer">
+            <app-contact-icon name="facebook" tone="footer" />
+            <span>{{ 'contact.facebook' | t }}</span>
+          </a>
+        }
+        @if (clinic().instagramUrl) {
+          <a class="footer-channel" [href]="clinic().instagramUrl" target="_blank" rel="noopener noreferrer">
+            <app-contact-icon name="instagram" tone="footer" />
+            <span>{{ 'contact.instagram' | t }}</span>
+          </a>
+        }
+      </div>
+      <div>
+        <p class="footer-label">{{ 'footer.hours' | t }}</p>
         <ul class="footer-hours">
           @for (row of clinic().hours; track row.days) {
             <li><span>{{ row.days }}</span><span>{{ row.time }}</span></li>
@@ -78,7 +118,7 @@
     </div>
     <div class="wrap footer-base">
       <p>© {{ year }} {{ clinic().name }}.</p>
-      <a routerLink="/contact" (click)="closeMenu()">Enquiry desk</a>
+      <a routerLink="/contact" (click)="closeMenu()">{{ 'nav.enquiryDesk' | t }}</a>
     </div>
   </footer>
 }

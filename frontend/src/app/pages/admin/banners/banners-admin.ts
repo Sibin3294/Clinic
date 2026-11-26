@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Banner } from '../../../core/clinic.models';
-import { confirmDelete } from '../../../core/confirm-dialog';
+import { confirmDelete, notifyError, notifySuccess } from '../../../core/confirm-dialog';
 import { ContentService } from '../../../core/content.service';
 import { MediaUrlPipe } from '../../../core/media-url.pipe';
 
@@ -18,8 +18,6 @@ export class BannersAdmin {
   readonly items = signal<Banner[]>([]);
   readonly formOpen = signal(false);
   readonly editingId = signal<string | null>(null);
-  readonly message = signal('');
-  readonly error = signal('');
   readonly formError = signal('');
   readonly uploading = signal(false);
 
@@ -38,7 +36,7 @@ export class BannersAdmin {
   reload(): void {
     this.content.listBannersAdmin().subscribe({
       next: (items) => this.items.set(items),
-      error: () => this.error.set('Could not load banners'),
+      error: () => notifyError('Could not load banners'),
     });
   }
 
@@ -82,10 +80,13 @@ export class BannersAdmin {
         this.form.patchValue({ src: res.url });
         this.uploading.set(false);
         input.value = '';
+        notifySuccess('Image uploaded');
       },
       error: (err) => {
         this.uploading.set(false);
-        this.formError.set(err?.error?.message || 'Upload failed');
+        const msg = err?.error?.message || 'Upload failed';
+        this.formError.set(msg);
+        notifyError(msg);
         input.value = '';
       },
     });
@@ -94,6 +95,7 @@ export class BannersAdmin {
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      notifyError('Please fill in the required fields');
       return;
     }
     const body = this.form.getRawValue();
@@ -101,12 +103,15 @@ export class BannersAdmin {
     const req = id ? this.content.updateBanner(id, body) : this.content.createBanner(body);
     req.subscribe({
       next: () => {
-        this.message.set(id ? 'Banner updated' : 'Banner created');
-        this.error.set('');
+        notifySuccess(id ? 'Banner updated' : 'Banner created');
         this.closeForm();
         this.reload();
       },
-      error: (err) => this.formError.set(err?.error?.message || 'Save failed'),
+      error: (err) => {
+        const msg = err?.error?.message || 'Save failed';
+        this.formError.set(msg);
+        notifyError(msg);
+      },
     });
   }
 
@@ -115,10 +120,10 @@ export class BannersAdmin {
     if (!ok) return;
     this.content.deleteBanner(item.id).subscribe({
       next: () => {
-        this.message.set('Banner deleted');
+        notifySuccess('Banner deleted');
         this.reload();
       },
-      error: () => this.error.set('Delete failed'),
+      error: () => notifyError('Delete failed'),
     });
   }
 }
